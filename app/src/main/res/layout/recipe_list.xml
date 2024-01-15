@@ -8,11 +8,11 @@
         android:layout_height="wrap_content">
 
         <!-- Your existing header layout -->
-        <ImageView
+        <View
+            android:id="@+id/view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/header_bg"
-            android:scaleType="centerCrop"/>
+            android:layout_height="81dp"
+            android:background="#607274" />
 
         <TextView
             android:layout_width="wrap_content"
