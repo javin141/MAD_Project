@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".About">
+
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="411dp"
+        android:layout_height="240dp"
+        app:srcCompat="@drawable/splogo" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="match_parent"
+        android:layout_height="158dp"
+        android:layout_alignTop="@id/imageView"
+        android:layout_marginTop="240dp"
+        android:gravity="center"
+        android:text="Mall Review V1.06 \n By \n Wei Chuen \n This is an app for Mall Reviewers to review Shopping malls they have visited"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+  </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

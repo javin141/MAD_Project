@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#16AABF"
+    android:gravity="center"
+    tools:context=".SplashActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/splashText"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:gravity="center"
+            android:text="Tau Wei Chuen \n P2204471"
+            android:textColor="#232323"
+            android:textSize="35sp"
+            android:textStyle="bold"
+            tools:text="Tau Wei Chuen \n P2204471" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="268dp"
+            android:layout_height="348dp"
+            android:maxWidth="50dp"
+            android:maxHeight="50dp"
+            android:minWidth="50dp"
+            android:minHeight="50dp"
+            app:srcCompat="@drawable/weichuen_image" />
+
+        <TextView
+            android:id="@+id/splashText2"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:gravity="center"
+            android:text="(Click on either menu buttons to get started)"
+            android:textColor="#232323"
+            android:textSize="35sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+</LinearLayout>
