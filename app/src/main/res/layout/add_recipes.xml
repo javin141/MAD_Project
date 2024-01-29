@@ -1,0 +1,68 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Image Input -->
+    <ImageView
+        android:id="@+id/imageInput"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/placeholder_image" />
+
+    <!-- Recipe Name Input -->
+    <EditText
+        android:id="@+id/recipeNameInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageInput"
+        android:layout_marginTop="16dp"
+        android:hint="Recipe Name" />
+
+    <!-- Calories Input -->
+    <EditText
+        android:id="@+id/caloriesInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/recipeNameInput"
+        android:layout_marginTop="16dp"
+        android:hint="Calories" />
+
+    <!-- Prep Time Input -->
+    <EditText
+        android:id="@+id/prepTimeInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/caloriesInput"
+        android:layout_marginTop="16dp"
+        android:hint="Prep Time" />
+
+    <!-- Ingredients Input -->
+    <EditText
+        android:id="@+id/ingredientsInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/prepTimeInput"
+        android:layout_marginTop="16dp"
+        android:hint="Ingredients"
+        android:inputType="textMultiLine" />
+
+    <!-- Description Input -->
+    <EditText
+        android:id="@+id/descriptionInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ingredientsInput"
+        android:layout_marginTop="16dp"
+        android:hint="Description"
+        android:inputType="textMultiLine" />
+
+    <!-- Save Button -->
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/descriptionInput"
+        android:layout_marginTop="16dp"
+        android:text="Save Recipe" />
+</RelativeLayout>

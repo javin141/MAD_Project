@@ -40,8 +40,21 @@ public class SimpleRecipeAdapter extends RecyclerView.Adapter<SimpleRecipeAdapte
 
         // Set item views based on your views and data model
         holder.recipeNameTextView.setText(recipe.getName());
-        holder.caloriesAndPrepTimeTextView.setText(recipe.getCaloriesAndPrepTime());
-        holder.recipeImageView.setImageResource(recipe.getImageResource());
+
+        // Combine calories and prepTime with " / " in between
+        String caloriesAndPrepTime = recipe.getCalories() + " / " + recipe.getPrepTime();
+        holder.caloriesAndPrepTimeTextView.setText(caloriesAndPrepTime);
+
+        // Set the username and adjust visibility accordingly
+        holder.usernameTextView.setText(recipe.getUsername());
+        if (recipe.getUsername() != null && !recipe.getUsername().isEmpty()) {
+            holder.usernameCardView.setVisibility(View.VISIBLE);
+        } else {
+            holder.usernameCardView.setVisibility(View.GONE);
+        }
+
+        // Set the image resource (change as per your actual image loading mechanism)
+        holder.recipeImageView.setImageResource(R.drawable.sample_food);
     }
 
     @Override
@@ -54,6 +67,8 @@ public class SimpleRecipeAdapter extends RecyclerView.Adapter<SimpleRecipeAdapte
         public TextView recipeNameTextView;
         public TextView caloriesAndPrepTimeTextView;
         public ImageView recipeImageView;
+        public TextView usernameTextView;
+        public View usernameCardView;
 
         public RecipeViewHolder(View itemView) {
             super(itemView);
@@ -62,6 +77,9 @@ public class SimpleRecipeAdapter extends RecyclerView.Adapter<SimpleRecipeAdapte
             recipeNameTextView = itemView.findViewById(R.id.recipeName);
             caloriesAndPrepTimeTextView = itemView.findViewById(R.id.caloriesAndPrepTime);
             recipeImageView = itemView.findViewById(R.id.recipeImage);
+            usernameTextView = itemView.findViewById(R.id.username);
+            usernameCardView = itemView.findViewById(R.id.usernameCardView);
         }
     }
 }
+

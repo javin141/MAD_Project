@@ -1,16 +1,41 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"> <!-- Adjust the margin value as needed -->
+    android:layout_margin="8dp">
 
     <!-- Image at the top (2/3 height) -->
     <ImageView
         android:id="@+id/recipeImage"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_weight="2"
         android:scaleType="centerCrop"
         android:src="@drawable/sample_food" />
+
+    <!-- Username Background -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/usernameCardView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:padding="4dp"
+        app:cardBackgroundColor="#D7FFFFFF"
+        app:cardCornerRadius="4dp">
+
+        <!-- Username -->
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:padding="3dp"
+            android:text="Username"
+            android:textColor="#000000"
+            android:textSize="14sp"
+            android:textStyle="bold|italic" />
+    </androidx.cardview.widget.CardView>
 
     <!-- Recipe Name -->
     <TextView
@@ -18,8 +43,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/recipeImage"
-        android:layout_marginTop="8dp"
-        android:padding="8dp"
+        android:layout_marginTop="3dp"
+        android:padding="3dp"
         android:text="Recipe Name"
         android:textSize="18sp"
         android:textStyle="bold" />
@@ -30,7 +55,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@+id/recipeName"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="3dp"
         android:background="@android:color/darker_gray" />
 
     <!-- Calories and Prep Time -->
@@ -39,11 +64,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/horizontalLine"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="3dp"
         android:padding="8dp"
         android:text="280 kcal / 10 mins"
         android:textSize="14sp" />
 
 </RelativeLayout>
+
+
+
+
 
 

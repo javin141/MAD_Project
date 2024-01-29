@@ -28,14 +28,9 @@ public class RecipeList extends AppCompatActivity {
         recyclerView.setAdapter(new SimpleRecipeAdapter(recipeList));
     }
 
-    // This method is used to generate sample recipe data, replace it with your actual data source
+    // Method to test gen recipes
     private List<Recipe> generateRecipeList() {
         List<Recipe> recipes = new ArrayList<>();
-
-        // Add sample recipes
-        recipes.add(new Recipe("Recipe 1", "280 kcal / 10 mins", R.drawable.sample_food));
-        recipes.add(new Recipe("Recipe 2", "350 kcal / 15 mins", R.drawable.sample_food));
-        // Add more recipes as needed...
 
         return recipes;
     }
