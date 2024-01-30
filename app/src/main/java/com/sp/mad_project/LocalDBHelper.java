@@ -54,7 +54,7 @@ public class LocalDBHelper extends SQLiteOpenHelper {
         // Upgrade logic goes here
     }
 
-    public long insertRecipe(String username, String name, String calories, byte[] image, String type, String prepTime, String description, String rating) {
+    public static long insertRecipe(String username, String name, String calories, byte[] image, String type, String prepTime, String description, String rating) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_USERNAME, username);

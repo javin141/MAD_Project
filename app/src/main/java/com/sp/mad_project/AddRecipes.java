@@ -178,7 +178,7 @@ public class AddRecipes extends AppCompatActivity {
 
         // Use AstraHelper to insert or update recipe in the Astra database
         AstraHelper astraHelper = new AstraHelper(); // Create an instance of AstraHelper
-        astraHelper.insertRecipe(username, recipeName, calories, imageBytes, type, prepTime, description, rating);
+        astraHelper.insertVolley(username, recipeName, calories, imageBytes, type, prepTime, description, rating);
 
         Toast.makeText(this, "Recipe saved successfully", Toast.LENGTH_SHORT).show();
         finish(); // Close the activity after saving
