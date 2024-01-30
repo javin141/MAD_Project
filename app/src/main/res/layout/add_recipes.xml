@@ -1,68 +1,176 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Image Input -->
-    <ImageView
-        android:id="@+id/imageInput"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/placeholder_image" />
-
-    <!-- Recipe Name Input -->
-    <EditText
-        android:id="@+id/recipeNameInput"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageInput"
-        android:layout_marginTop="16dp"
-        android:hint="Recipe Name" />
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp">
 
-    <!-- Calories Input -->
-    <EditText
-        android:id="@+id/caloriesInput"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/recipeNameInput"
-        android:layout_marginTop="16dp"
-        android:hint="Calories" />
+        <!-- Image Input -->
+        <ImageView
+            android:id="@+id/imageInput"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/placeholder_image" />
 
-    <!-- Prep Time Input -->
-    <EditText
-        android:id="@+id/prepTimeInput"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/caloriesInput"
-        android:layout_marginTop="16dp"
-        android:hint="Prep Time" />
+        <!-- Upload Image Button -->
+        <Button
+            android:id="@+id/btnUploadImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageInput"
+            android:layout_marginTop="8dp"
+            android:text="Upload Image" />
 
-    <!-- Ingredients Input -->
-    <EditText
-        android:id="@+id/ingredientsInput"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/prepTimeInput"
-        android:layout_marginTop="16dp"
-        android:hint="Ingredients"
-        android:inputType="textMultiLine" />
+        <!-- Take Picture Button -->
+        <Button
+            android:id="@+id/btnCaptureImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageInput"
+            android:layout_marginTop="8dp"
+            android:layout_toEndOf="@id/btnUploadImage"
+            android:text="Take Picture" />
 
-    <!-- Description Input -->
-    <EditText
-        android:id="@+id/descriptionInput"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ingredientsInput"
-        android:layout_marginTop="16dp"
-        android:hint="Description"
-        android:inputType="textMultiLine" />
+        <!-- Recipe Name Input -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/recipeNameInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btnCaptureImage"
+            android:layout_marginTop="8dp">
 
-    <!-- Save Button -->
-    <Button
-        android:id="@+id/saveButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/descriptionInput"
-        android:layout_marginTop="16dp"
-        android:text="Save Recipe" />
-</RelativeLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/recipeNameInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Recipe Name" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Calories Input -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/caloriesInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/recipeNameInputLayout"
+            android:layout_marginTop="8dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/caloriesInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Calories" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/typeLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/caloriesInputLayout"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="10dp"
+            android:text="Type"
+            android:textSize="15dp" />
+
+        <!-- Type RadioButtons -->
+
+        <!-- Prep Time Input -->
+        <GridLayout
+            android:id="@+id/typeGridLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/typeLabel"
+            android:layout_marginTop="0dp"
+            android:columnCount="2"
+
+            android:columnOrderPreserved="false">
+
+            <RadioButton
+                android:id="@+id/radioMain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Main Course" />
+
+            <RadioButton
+                android:id="@+id/radioSide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Side Dish" />
+
+            <RadioButton
+                android:id="@+id/radioSnacks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Snack" />
+
+            <RadioButton
+                android:id="@+id/radioDesserts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dessert" />
+
+            <RadioButton
+                android:id="@+id/radioDrinks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Drink" />
+
+            <RadioButton
+                android:id="@+id/radioOther"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Other" />
+        </GridLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/prepTimeInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/typeGridLayout"
+            android:layout_marginTop="8dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/prepTimeInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Prep Time" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Description Input -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/descriptionInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/prepTimeInputLayout"
+            android:layout_marginTop="8dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/descriptionInput"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:hint="Description"
+                android:inputType="textMultiLine" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Save Button -->
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/descriptionInputLayout"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="Save Recipe" />
+    </RelativeLayout>
+</ScrollView>
+
+
+
+
+
+
+
