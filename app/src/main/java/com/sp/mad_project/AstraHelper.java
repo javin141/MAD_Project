@@ -32,6 +32,8 @@ public class AstraHelper {
     private long ingredients;
     private int volleyResponseStatus;
 
+
+
     static HashMap<String, String> getHeader() {
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
@@ -40,8 +42,9 @@ public class AstraHelper {
         return headers;
     }
 
-    private void insertVolley(Context context, String usernameStr, String foodnameStr, String caloriesStr, String imageResourceStr, String typeStr, String preperationtimeStr, String descriptionStr, String ratingStr) {
+    void insertVolley(String context, String usernameStr, String foodnameStr, String caloriesStr, String imageResourceStr, String typeStr, String preperationtimeStr, String descriptionStr, String ratingStr) {
         Map<String, String> params = new HashMap<>();
+        params.put("id", context);
         params.put("username", usernameStr);
         params.put("foodname", foodnameStr);
         params.put("calories", caloriesStr);
@@ -53,7 +56,7 @@ public class AstraHelper {
 
         JSONObject postdata = new JSONObject(params);
         RequestQueue queue = Volley.newRequestQueue(context);
-        String insertUrl = region + "/v2/keyspaces/" + keyspace + "/" + recipeTable + "/" + typeStr;
+        String insertUrl = region + "/v2/keyspaces/" + keyspace + "/" + recipeTable + "/" + context;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, insertUrl, postdata,
                 new Response.Listener<JSONObject>() {
                     @Override
