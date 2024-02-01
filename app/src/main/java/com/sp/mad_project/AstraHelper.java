@@ -32,6 +32,8 @@ public class AstraHelper {
     private long ingredients;
     private int volleyResponseStatus;
 
+    RequestQueue
+
 
 
     static HashMap<String, String> getHeader() {
@@ -42,7 +44,7 @@ public class AstraHelper {
         return headers;
     }
 
-    void insertVolley(String context, String usernameStr, String foodnameStr, String caloriesStr, String imageResourceStr, String typeStr, String preperationtimeStr, String descriptionStr, String ratingStr) {
+    void insertVolley(String context, String usernameStr, String foodnameStr, String caloriesStr, String imageResourceStr, String typeStr, String preperationtimeStr, String descriptionStr, Integer rating) {
         Map<String, String> params = new HashMap<>();
         params.put("id", context);
         params.put("username", usernameStr);
@@ -52,7 +54,7 @@ public class AstraHelper {
         params.put("type", typeStr);
         params.put("preparationtime", preperationtimeStr);
         params.put("description", descriptionStr);
-        params.put("rating", ratingStr);
+        params.put("rating", String.valueOf(rating));
 
         JSONObject postdata = new JSONObject(params);
         RequestQueue queue = Volley.newRequestQueue(context);
@@ -78,8 +80,8 @@ public class AstraHelper {
         queue.add(jsonObjectRequest);
     }
 
-    private void getIDByVolley(Context context, String type, String calories) {
-        String getUrl = region + "/v2/keyspaces/" + keyspace + "/" + recipeTable + "/" + type + "/" + calories;
+    private void getIDByVolley(Context context) {
+        String getUrl = region + "/v2/keyspaces/" + keyspace + "/" + recipeTable + "/" +  context;
         RequestQueue queue = Volley.newRequestQueue(context);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, getUrl, null,
                 new Response.Listener<JSONObject>() {
@@ -91,16 +93,17 @@ public class AstraHelper {
                                 if (count > 0) {
                                     JSONArray data = response.getJSONArray("data");
                                     // Update values from JSON
-                                    String Sqlusername = data.getJSONObject(0).getString("UsernameStr");
-                                    String Sqlfoodname = data.getJSONObject(0).getString("foodnameStr");
-                                    String Sqlcalories = data.getJSONObject(0).getString("caloriesStr");
-                                    String Sqlimage = data.getJSONObject(0).getString("imageResourceStr");
-                                    String Sqltype = data.getJSONObject(0).getString("typeStr");
-                                    String Sqlpreparationtime = data.getJSONObject(0).getString("preparationtimeStr");
-                                    String Sqldescription = data.getJSONObject(0).getString("descriptionStr");
-                                    String Sqlrating = data.getJSONObject(0).getString("ratingStr");
+                                    Integer Sqlid = data.getJSONObject(0).getInt("ID");
+                                    String Sqlusername = data.getJSONObject(0).getString("Username");
+                                    String Sqlfoodname = data.getJSONObject(0).getString("foodname");
+                                    String Sqlcalories = data.getJSONObject(0).getString("calories");
+                                    String Sqlimage = data.getJSONObject(0).getString("imageResource");
+                                    String Sqltype = data.getJSONObject(0).getString("type");
+                                    String Sqlpreparationtime = data.getJSONObject(0).getString("preparationtime");
+                                    String Sqldescription = data.getJSONObject(0).getString("description");
+                                    Integer Sqlrating = data.getJSONObject(0).getInt("rating");
                                     // Assuming LocalDBHelper is another class with an insertRecipe method
-                                    LocalDBHelper.insertRecipe(Sqlusername, Sqlfoodname, Sqlcalories, Sqlimage, Sqltype, Sqlpreparationtime, Sqldescription, Sqlrating);
+                                    LocalDBHelper.insertRecipe(Sqlid,Sqlusername, Sqlfoodname, Sqlcalories, Sqlimage, Sqltype, Sqlpreparationtime, Sqldescription, Sqlrating);
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();

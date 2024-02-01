@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
@@ -26,9 +27,9 @@ import java.util.List;
 import java.util.Map;
 
 public class RecipeList extends AppCompatActivity {
-    private List<Recipe> model = new ArrayList<>();
+    private List<Recipes> model = new ArrayList<>();
     private RecipeAdapter adapter = null;
-    private Requestqueue queue;
+    private RequestQueue queue;
     private int volleyResponseStatus;
 
 
@@ -36,6 +37,8 @@ public class RecipeList extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recipe_list);
+        adapter = new RecipeAdapter();
+
 
         // Initialize RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recyclerViewRecipes);
@@ -64,9 +67,9 @@ public class RecipeList extends AppCompatActivity {
                         if (volleyResponseStatus == 200) { // Read successfully from database
                             try {
                                 int count = response.getInt("count"); //Number of records from database
-                                adapter.clear(); //reset adapter
+                                //adapter.clear(); //reset adapter
                                 if (count > 0) { //Has more than 1 record
-                                    empty.setVisibility(View.INVISIBLE);
+                                   // empty.setVisibility(View.INVISIBLE);
                                     JSONArray data = response.getJSONArray("data");//Get all the records as JSON array
                                     for (int i = 0; i <= count; i++) { // Loop through all records
                                         Recipe r = new Recipe();
@@ -85,10 +88,20 @@ public class RecipeList extends AppCompatActivity {
                                         r.setLon(data.getJSONObject(i).getString("lon")); //extract the lon
                                         adapter.add(r); // add the record to the adapter
                                         */
-
+                                        Integer Sqlid = data.getJSONObject(0).getInt("ID");
+                                        String Sqlusername = data.getJSONObject(0).getString("Username");
+                                        String Sqlfoodname = data.getJSONObject(0).getString("foodname");
+                                        String Sqlcalories = data.getJSONObject(0).getString("calories");
+                                        String Sqlimage = data.getJSONObject(0).getString("imageResource");
+                                        String Sqltype = data.getJSONObject(0).getString("type");
+                                        String Sqlpreparationtime = data.getJSONObject(0).getString("preparationtime");
+                                        String Sqldescription = data.getJSONObject(0).getString("description");
+                                        Integer Sqlrating = data.getJSONObject(0).getInt("rating");
+                                        // Assuming LocalDBHelper is another class with an insertRecipe method
+                                        LocalDBHelper.insertRecipe(Sqlid,Sqlusername, Sqlfoodname, Sqlcalories, Sqlimage, Sqltype, Sqlpreparationtime, Sqldescription, Sqlrating);
                                     }
                                 } else {
-                                    empty.setVisibility(View.VISIBLE);
+                                   // empty.setVisibility(View.VISIBLE);
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
