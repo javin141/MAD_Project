@@ -163,6 +163,7 @@ public class AddRecipes extends AppCompatActivity {
             imageBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.placeholder_image);
         }
 
+        // Use actual imageBytes from the image view
         byte[] imageBytes = BitmapUtils.getBytes(imageBitmap);
 
         // Set default values
@@ -170,16 +171,9 @@ public class AddRecipes extends AppCompatActivity {
             calories = "0";
         }
 
-        // Validate input
-        if (recipeName.isEmpty() || calories.isEmpty() || prepTime.isEmpty() || description.isEmpty() || type.isEmpty()) {
-            Toast.makeText(this, "Please fill in all fields and select a type", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
         // Use AstraHelper to insert or update recipe in the Astra database
         AstraHelper astraHelper = new AstraHelper(); // Create an instance of AstraHelper
-        String bytesubstitute = "yeah";
-        astraHelper.insertVolley(String.valueOf(AstraHelper.lastID = 1),username, recipeName, calories, bytesubstitute , type, prepTime, description, rating);
+        astraHelper.insertVolley(this, username, recipeName, calories, imageBytes, type, prepTime, description, rating);
 
         Toast.makeText(this, "Recipe saved successfully", Toast.LENGTH_SHORT).show();
         finish(); // Close the activity after saving

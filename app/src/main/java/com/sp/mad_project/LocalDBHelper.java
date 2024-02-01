@@ -7,8 +7,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import androidx.annotation.Nullable;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +14,8 @@ public class LocalDBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "recipes_database";
     private static final int DATABASE_VERSION = 3;
+
+    private Context context;
 
     public static final String TABLE_NAME = "recipes";
     public static final String COLUMN_ID = "_id";
@@ -40,8 +40,13 @@ public class LocalDBHelper extends SQLiteOpenHelper {
                     COLUMN_RATING + " TEXT," +
                     COLUMN_USERNAME + " TEXT)";
 
-    public LocalDBHelper(@Nullable Context context) {
+    public LocalDBHelper() {
+        super(null, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    public LocalDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
     }
 
     @Override
@@ -54,10 +59,10 @@ public class LocalDBHelper extends SQLiteOpenHelper {
         // Upgrade logic goes here
     }
 
-    public void insertRecipe(int id, String username, String name, String calories, byte[] image, String type, String prepTime, String description, String rating) {
+    public void insertRecipe(Integer id, String username, String name, String calories, byte[] image, String type, String prepTime, String description, String rating) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COLUMN_ID, id);
+        values.put(COLUMN_ID, String.valueOf(id));
         values.put(COLUMN_USERNAME, username);
         values.put(COLUMN_NAME, name);
         values.put(COLUMN_CALORIES, calories);

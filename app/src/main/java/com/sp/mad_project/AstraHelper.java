@@ -1,6 +1,7 @@
 package com.sp.mad_project;
 
 import android.content.Context;
+import android.util.Base64;
 import android.util.Log;
 
 import com.android.volley.NetworkResponse;
@@ -17,12 +18,20 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
+
+import android.net.Uri;
+
 
 public class AstraHelper {
     static String region = "us-east1";
     static String keyspace = "app_space";
     static String recipeTable = "bakingbread";
-    static String url = region + "/v2/keyspaces/" + keyspace + "/" + recipeTable + "/{primary_key}";
+
+    // static String url =  region + "/v2/keyspaces/" + keyspace + "/" + recipeTable + "/{primary_key}";
+    // static String url = "https://" + region + "/v2/keyspaces/" + keyspace + "/" + recipeTable + "/{primary_key}";
+    // static String url = "https://" + region + ".apps.astra.datastax.com/v2/keyspaces/" + keyspace + "/" + recipeTable + "/{primary_key}";
+    static String url = "https://" + region + ".apps.astra.datastax.com/v2/keyspaces/" + keyspace + "/" + recipeTable;
     static String Cassandra_Token = "AstraCS:ZMetAiPMmTGKEhjTXESYvyTO:964b9d72dd52cfcb550fa1a2793190b66bac9a21939666be4efda2f8eee492a7";
     static int lastID = 0;
     private String username;
@@ -30,10 +39,7 @@ public class AstraHelper {
     private int calories;
     private int imageResource;
     private long ingredients;
-    private int volleyResponseStatus;
-
-
-
+    private static int volleyResponseStatus;
 
     static HashMap<String, String> getHeader() {
         HashMap<String, String> headers = new HashMap<>();
@@ -43,21 +49,27 @@ public class AstraHelper {
         return headers;
     }
 
-    void insertVolley(String context, String usernameStr, String foodnameStr, String caloriesStr, String imageResourceStr, String typeStr, String preperationtimeStr, String descriptionStr, String rating) {
+    void insertVolley(Context context, String usernameStr, String foodnameStr, String caloriesStr, byte[] imageBytes, String typeStr, String preperationtimeStr, String descriptionStr, String rating) {
         Map<String, String> params = new HashMap<>();
-        params.put("id", context);
+        String primaryKey = generateUniqueId();
+        params.put("id", primaryKey);
         params.put("username", usernameStr);
         params.put("foodname", foodnameStr);
         params.put("calories", caloriesStr);
-        params.put("image", imageResourceStr);
+        params.put("image", Base64.encodeToString(imageBytes, Base64.DEFAULT));
         params.put("type", typeStr);
         params.put("preparationtime", preperationtimeStr);
         params.put("description", descriptionStr);
         params.put("rating", rating);
 
+        // Construct the URL by directly appending the UUID to the base URL
+        String insertUrl = url + "/" + primaryKey;
+
         JSONObject postdata = new JSONObject(params);
         RequestQueue queue = Volley.newRequestQueue(context);
-        String insertUrl = region + "/v2/keyspaces/" + keyspace + "/" + recipeTable + "/" + context;
+
+        Log.d("AstraHelper", "Constructed URL: " + insertUrl);
+
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, insertUrl, postdata,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -79,34 +91,44 @@ public class AstraHelper {
         queue.add(jsonObjectRequest);
     }
 
-    private void getIDByVolley(Context context) {
-        String getUrl = region + "/v2/keyspaces/" + keyspace + "/" + recipeTable + "/" +  context;
+    public static void getAllRecipesByVolley(Context context) {
+        // String getUrl = https:// region + "/v2/keyspaces/" + keyspace + "/" + recipeTable;
         RequestQueue queue = Volley.newRequestQueue(context);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, getUrl, null,
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        if (volleyResponseStatus == 200) {
-                            try {
-                                int count = response.getInt("count");
-                                if (count > 0) {
-                                    JSONArray data = response.getJSONArray("data");
-                                    // Update values from JSON
-                                    Integer Sqlid = data.getJSONObject(0).getInt("ID");
-                                    String Sqlusername = data.getJSONObject(0).getString("Username");
-                                    String Sqlfoodname = data.getJSONObject(0).getString("foodname");
-                                    String Sqlcalories = data.getJSONObject(0).getString("calories");
-                                    String Sqlimage = data.getJSONObject(0).getString("imageResource");
-                                    String Sqltype = data.getJSONObject(0).getString("type");
-                                    String Sqlpreparationtime = data.getJSONObject(0).getString("preparationtime");
-                                    String Sqldescription = data.getJSONObject(0).getString("description");
-                                    Integer Sqlrating = data.getJSONObject(0).getInt("rating");
-                                    // Assuming LocalDBHelper is another class with an insertRecipe method
-                                    LocalDBHelper.insertRecipe(Sqlid,Sqlusername, Sqlfoodname, Sqlcalories, Sqlimage, Sqltype, Sqlpreparationtime, Sqldescription, Sqlrating);
+                        try {
+                            int count = response.getInt("count");
+                            if (count > 0) {
+                                JSONArray data = response.getJSONArray("data");
+                                // Assuming LocalDBHelper is another class with an insertRecipe method
+                                LocalDBHelper localdb = new LocalDBHelper();
+                                for (int i = 0; i < count; i++) {
+                                    try {
+                                        Integer Sqlid = data.getJSONObject(i).getInt("ID");
+                                        String Sqlusername = data.getJSONObject(i).getString("Username");
+                                        String Sqlfoodname = data.getJSONObject(i).getString("foodname");
+                                        String Sqlcalories = data.getJSONObject(i).getString("calories");
+                                        byte[] Sqlimage = Base64.decode(data.getJSONObject(i).getString("imageResource"), Base64.DEFAULT);
+                                        String Sqltype = data.getJSONObject(i).getString("type");
+                                        String Sqlpreparationtime = data.getJSONObject(i).getString("preparationtime");
+                                        String Sqldescription = data.getJSONObject(i).getString("description");
+                                        Integer Sqlrating = data.getJSONObject(i).getInt("rating");
+
+                                        localdb.insertRecipe(Sqlid, Sqlusername, Sqlfoodname, Sqlcalories, Sqlimage, Sqltype, Sqlpreparationtime, Sqldescription, String.valueOf(Sqlrating));
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        // Handle JSONException (parsing individual recipe) if needed
+                                    }
                                 }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
                             }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            // Handle JSONException (parsing the main response) if needed
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            // Handle other exceptions if needed
                         }
                     }
                 },
@@ -130,4 +152,10 @@ public class AstraHelper {
         // Add JsonObjectRequest to the request queue
         queue.add(jsonObjectRequest);
     }
+
+    private static String generateUniqueId() {
+        // Generate a unique ID using UUID (Universally Unique Identifier)
+        return UUID.randomUUID().toString();
+    }
+
 }
