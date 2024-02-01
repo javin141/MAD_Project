@@ -27,8 +27,6 @@ import java.util.List;
 import java.util.Map;
 
 public class RecipeList extends AppCompatActivity {
-    private List<Recipes> model = new ArrayList<>();
-    private RecipeAdapter adapter = null;
     private RequestQueue queue;
     private int volleyResponseStatus;
 
@@ -37,7 +35,6 @@ public class RecipeList extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recipe_list);
-        adapter = new RecipeAdapter();
 
 
         // Initialize RecyclerView
