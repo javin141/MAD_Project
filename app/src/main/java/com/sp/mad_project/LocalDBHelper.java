@@ -15,29 +15,29 @@ import java.util.List;
 public class LocalDBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "recipes_database";
-    private static final int DATABASE_VERSION = 3; // Incremented by 1
+    private static final int DATABASE_VERSION = 3;
 
     public static final String TABLE_NAME = "recipes";
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_CALORIES = "calories";
     public static final String COLUMN_PREP_TIME = "prep_time";
-    public static final String COLUMN_TYPE = "type"; // Changed from COLUMN_INGREDIENTS to COLUMN_TYPE
+    public static final String COLUMN_TYPE = "type";
     public static final String COLUMN_DESCRIPTION = "description";
     public static final String COLUMN_IMAGE = "image";
     public static final String COLUMN_RATING = "rating";
-    public static final String COLUMN_USERNAME = "username"; // New column
+    public static final String COLUMN_USERNAME = "username";
 
     private static final String CREATE_TABLE =
             "CREATE TABLE " + TABLE_NAME + " (" +
-                    COLUMN_ID + "INTEGER," +
+                    COLUMN_ID + " INTEGER," +
                     COLUMN_NAME + " TEXT," +
                     COLUMN_CALORIES + " TEXT," +
                     COLUMN_PREP_TIME + " TEXT," +
-                    COLUMN_TYPE + " TEXT," + // Changed from COLUMN_INGREDIENTS to COLUMN_TYPE
+                    COLUMN_TYPE + " TEXT," +
                     COLUMN_DESCRIPTION + " TEXT," +
                     COLUMN_IMAGE + " BLOB," +
-                    COLUMN_RATING + " TEXT," + // Changed from INTEGER to TEXT
+                    COLUMN_RATING + " TEXT," +
                     COLUMN_USERNAME + " TEXT)";
 
     public LocalDBHelper(@Nullable Context context) {
@@ -54,7 +54,7 @@ public class LocalDBHelper extends SQLiteOpenHelper {
         // Upgrade logic goes here
     }
 
-    public long insertRecipe(int id, String username, String name, String calories, byte[] image, String type, String prepTime, String description, String rating) {
+    public void insertRecipe(int id, String username, String name, String calories, byte[] image, String type, String prepTime, String description, String rating) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_ID, id);
@@ -62,14 +62,13 @@ public class LocalDBHelper extends SQLiteOpenHelper {
         values.put(COLUMN_NAME, name);
         values.put(COLUMN_CALORIES, calories);
         values.put(COLUMN_PREP_TIME, prepTime);
-        values.put(COLUMN_TYPE, type); // Changed from COLUMN_INGREDIENTS to COLUMN_TYPE
+        values.put(COLUMN_TYPE, type);
         values.put(COLUMN_DESCRIPTION, description);
         values.put(COLUMN_IMAGE, image);
         values.put(COLUMN_RATING, rating);
 
         long newRowId = db.insert(TABLE_NAME, null, values);
         db.close();
-        return newRowId;
     }
 
     @SuppressLint("Range")
@@ -89,10 +88,10 @@ public class LocalDBHelper extends SQLiteOpenHelper {
                     recipe.setName(cursor.getString(cursor.getColumnIndex(COLUMN_NAME)));
                     recipe.setCalories(cursor.getString(cursor.getColumnIndex(COLUMN_CALORIES)));
                     recipe.setPrepTime(cursor.getString(cursor.getColumnIndex(COLUMN_PREP_TIME)));
-                    recipe.setType(cursor.getString(cursor.getColumnIndex(COLUMN_TYPE))); // Changed from COLUMN_INGREDIENTS to COLUMN_TYPE
+                    recipe.setType(cursor.getString(cursor.getColumnIndex(COLUMN_TYPE)));
                     recipe.setDescription(cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION)));
                     recipe.setImage(cursor.getBlob(cursor.getColumnIndex(COLUMN_IMAGE)));
-                    recipe.setRating(cursor.getString(cursor.getColumnIndex(COLUMN_RATING))); // Changed from INTEGER to TEXT
+                    recipe.setRating(cursor.getString(cursor.getColumnIndex(COLUMN_RATING)));
                     recipe.setUsername(cursor.getString(cursor.getColumnIndex(COLUMN_USERNAME)));
 
                     recipes.add(recipe);
@@ -104,10 +103,7 @@ public class LocalDBHelper extends SQLiteOpenHelper {
             }
         }
 
-        db.close();
         return recipes;
     }
 }
-
-
 

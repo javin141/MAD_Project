@@ -32,10 +32,6 @@ public class AstraHelper {
     private long ingredients;
     private int volleyResponseStatus;
 
-    RequestQueue
-
-
-
     static HashMap<String, String> getHeader() {
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
