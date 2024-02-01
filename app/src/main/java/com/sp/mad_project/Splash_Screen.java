@@ -16,7 +16,7 @@ public class Splash_Screen extends AppCompatActivity {
         setContentView(R.layout.splash_screen);
 
         // Initialize MediaPlayer with the audio resource
-        mediaPlayer = MediaPlayer.create(this, R.raw.git splash); // Replace with your audio file
+        mediaPlayer = MediaPlayer.create(this, R.raw.splash); // Replace with your audio file
 
         // Start playing the audio
         mediaPlayer.start();
