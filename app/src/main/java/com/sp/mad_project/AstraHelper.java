@@ -21,7 +21,7 @@ import java.util.Map;
 public class AstraHelper {
     static String region = "us-east1";
     static String keyspace = "app_space";
-    static String recipeTable = "recipe_table";
+    static String recipeTable = "bakingbread";
     static String url = region + "/v2/keyspaces/" + keyspace + "/" + recipeTable + "/{primary_key}";
     static String Cassandra_Token = "AstraCS:ZMetAiPMmTGKEhjTXESYvyTO:964b9d72dd52cfcb550fa1a2793190b66bac9a21939666be4efda2f8eee492a7";
     static int lastID = 0;
@@ -32,7 +32,6 @@ public class AstraHelper {
     private long ingredients;
     private int volleyResponseStatus;
 
-    RequestQueue
 
 
 
@@ -44,7 +43,7 @@ public class AstraHelper {
         return headers;
     }
 
-    void insertVolley(String context, String usernameStr, String foodnameStr, String caloriesStr, String imageResourceStr, String typeStr, String preperationtimeStr, String descriptionStr, Integer rating) {
+    void insertVolley(String context, String usernameStr, String foodnameStr, String caloriesStr, String imageResourceStr, String typeStr, String preperationtimeStr, String descriptionStr, String rating) {
         Map<String, String> params = new HashMap<>();
         params.put("id", context);
         params.put("username", usernameStr);
@@ -54,7 +53,7 @@ public class AstraHelper {
         params.put("type", typeStr);
         params.put("preparationtime", preperationtimeStr);
         params.put("description", descriptionStr);
-        params.put("rating", String.valueOf(rating));
+        params.put("rating", rating);
 
         JSONObject postdata = new JSONObject(params);
         RequestQueue queue = Volley.newRequestQueue(context);
