@@ -27,12 +27,14 @@ public class AstraHelper {
     static String region = "us-east1";
     static String keyspace = "api/rest/v2/keyspaces/app_space";
     static String recipeTable = "bakingbread";
+    static String CredentialsTable = "logininfo";
     static String astraid ="dfbca21d-c613-4eb2-af50-f8c61015c33c";
 
     // static String url =  region + "/v2/keyspaces/" + keyspace + "/" + recipeTable + "/{primary_key}";
     // static String url = "https://" + region + "/v2/keyspaces/" + keyspace + "/" + recipeTable + "/{primary_key}";
     // static String url = "https://" + region + ".apps.astra.datastax.com/v2/keyspaces/" + keyspace + "/" + recipeTable + "/{primary_key}";
     static String url = "https://" + astraid + "-" + region + ".apps.astra.datastax.com/"+ keyspace + "/" + recipeTable;
+    static String Loginurl =  "https://" + astraid + "-" + region + ".apps.astra.datastax.com/"+ keyspace + "/" + CredentialsTable;
     static String Cassandra_Token = "AstraCS:vPMfhrwCAAwdeoBakkHbfoLM:9fa3eca58b18c041fc936b2444ed41d68215efb342040dabb028eb19cb9cd0f7";
     static int lastID = 0;
     private String username;
@@ -81,7 +83,7 @@ public class AstraHelper {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("OnErrorResponses", error.toString());
+                        Log.e("OnErrorResponse", error.toString());
                     }
                 }) {
             @Override
@@ -159,4 +161,84 @@ public class AstraHelper {
         return UUID.randomUUID().toString();
     }
 
+    void insertVolleyLogin(Context context,String NameofUser, Integer Password) {
+        Map<String, String> params = new HashMap<>();
+        String id = generateUniqueId();
+        params.put("id", id);
+        params.put("NameofUser", NameofUser);
+        params.put("Password", String.valueOf(Password));
+
+        // Construct the URL by directly appending the UUID to the base URL
+        String insertUrl = Loginurl + "/" + NameofUser;
+
+        JSONObject postdata = new JSONObject(params);
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        Log.d("AstraHelper", "Constructed URL: " + insertUrl);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, insertUrl, postdata,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // Handle response if needed
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("OnErrorResponse", error.toString());
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                return AstraHelper.getHeader();
+            }
+        };
+        queue.add(jsonObjectRequest);
+    }
+
+    private void getByIDVolleyLogin(String name) {
+        String url = AstraHelper.Loginurl + name; //Query by id
+        RequestQueue queue = Volley.newRequestQueue(this);
+        // Use GET REST api call
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        if (volleyResponseStatus == 200) { // Read successfully from database
+                            try {
+                                int count = response.getInt("count"); //Number of records from database
+                                if (count > 0) {
+                                    JSONArray data = response.getJSONArray("data");//Get the record as JSON array
+                                    //parse value somehow lol
+                                    // data.getJSONObject(0).getString("password");
+
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+                        Log.e("OnErrorResponse", error.toString());
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                return AstraHelper.getHeader();
+            }
+
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                volleyResponseStatus = response.statusCode;
+                return super.parseNetworkResponse(response);
+            }
+        };
+        // add JsonObjectRequest to the RequestQueue
+        queue.add(jsonObjectRequest);
+    }
 }

@@ -110,5 +110,42 @@ public class LocalDBHelper extends SQLiteOpenHelper {
 
         return recipes;
     }
+
+
+
+    public List<Recipe> Recipesfilter() {
+        List<Recipe> recipes = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+
+
+        try {
+            cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+
+            if (cursor.moveToFirst()) {
+                do {
+                    Recipe recipe = new Recipe();
+
+                    recipe.setId(cursor.getLong(cursor.getColumnIndex(COLUMN_ID)));
+                    recipe.setName(cursor.getString(cursor.getColumnIndex(COLUMN_NAME)));
+                    recipe.setCalories(cursor.getString(cursor.getColumnIndex(COLUMN_CALORIES)));
+                    recipe.setPrepTime(cursor.getString(cursor.getColumnIndex(COLUMN_PREP_TIME)));
+                    recipe.setType(cursor.getString(cursor.getColumnIndex(COLUMN_TYPE)));
+                    recipe.setDescription(cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION)));
+                    recipe.setImage(cursor.getBlob(cursor.getColumnIndex(COLUMN_IMAGE)));
+                    recipe.setRating(cursor.getString(cursor.getColumnIndex(COLUMN_RATING)));
+                    recipe.setUsername(cursor.getString(cursor.getColumnIndex(COLUMN_USERNAME)));
+
+                    recipes.add(recipe);
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+
+        return recipes;
+    }
 }
 
