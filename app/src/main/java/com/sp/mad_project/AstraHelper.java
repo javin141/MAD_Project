@@ -25,14 +25,15 @@ import android.net.Uri;
 
 public class AstraHelper {
     static String region = "us-east1";
-    static String keyspace = "app_space";
+    static String keyspace = "api/rest/v2/keyspaces/app_space";
     static String recipeTable = "bakingbread";
+    static String astraid ="dfbca21d-c613-4eb2-af50-f8c61015c33c";
 
     // static String url =  region + "/v2/keyspaces/" + keyspace + "/" + recipeTable + "/{primary_key}";
     // static String url = "https://" + region + "/v2/keyspaces/" + keyspace + "/" + recipeTable + "/{primary_key}";
     // static String url = "https://" + region + ".apps.astra.datastax.com/v2/keyspaces/" + keyspace + "/" + recipeTable + "/{primary_key}";
-    static String url = "https://" + region + ".apps.astra.datastax.com/v2/keyspaces/" + keyspace + "/" + recipeTable;
-    static String Cassandra_Token = "AstraCS:ZMetAiPMmTGKEhjTXESYvyTO:964b9d72dd52cfcb550fa1a2793190b66bac9a21939666be4efda2f8eee492a7";
+    static String url = "https://" + astraid + "-" + region + ".apps.astra.datastax.com/"+ keyspace + "/" + recipeTable;
+    static String Cassandra_Token = "AstraCS:vPMfhrwCAAwdeoBakkHbfoLM:9fa3eca58b18c041fc936b2444ed41d68215efb342040dabb028eb19cb9cd0f7";
     static int lastID = 0;
     private String username;
     private String foodname;
@@ -41,8 +42,8 @@ public class AstraHelper {
     private long ingredients;
     private static int volleyResponseStatus;
 
-    static HashMap<String, String> getHeader() {
-        HashMap<String, String> headers = new HashMap<>();
+    static HashMap getHeader() {
+        HashMap<String, String> headers = new HashMap<String, String>();
         headers.put("Content-Type", "application/json");
         headers.put("X-Cassandra-Token", Cassandra_Token);
         headers.put("Accept", "application/json");
