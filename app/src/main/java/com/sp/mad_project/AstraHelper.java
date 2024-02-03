@@ -30,8 +30,8 @@ public class AstraHelper {
     // static String url =  region + "/v2/keyspaces/" + keyspace + "/" + recipeTable + "/{primary_key}";
     // static String url = "https://" + region + "/v2/keyspaces/" + keyspace + "/" + recipeTable + "/{primary_key}";
     // static String url = "https://" + region + ".apps.astra.datastax.com/v2/keyspaces/" + keyspace + "/" + recipeTable + "/{primary_key}";
-    static String url = "https://" + astraid + "-" + region + ".apps.astra.datastax.com/"+ keyspace + "/" + recipeTable ;
-    static String Loginurl =  "https://" + astraid + "-" + region + ".apps.astra.datastax.com/"+ keyspace + "/" + CredentialsTable;
+    static String url = "https://" + astraid + "-" + region + ".apps.astra.datastax.com/"+ keyspace + "/" + recipeTable + "/";;
+    static String Loginurl =  "https://" + astraid + "-" + region + ".apps.astra.datastax.com/"+ keyspace + "/" + CredentialsTable+ "/";git ;
     static String Cassandra_Token = "AstraCS:vPMfhrwCAAwdeoBakkHbfoLM:9fa3eca58b18c041fc936b2444ed41d68215efb342040dabb028eb19cb9cd0f7";
     static int lastID = 0;
     private String username;
