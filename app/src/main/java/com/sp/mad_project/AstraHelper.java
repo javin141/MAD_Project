@@ -20,9 +20,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import android.net.Uri;
-
-
 public class AstraHelper {
     static String region = "us-east1";
     static String keyspace = "api/rest/v2/keyspaces/app_space";
@@ -44,15 +41,15 @@ public class AstraHelper {
     private long ingredients;
     private static int volleyResponseStatus;
 
-    static HashMap getHeader() {
-        HashMap<String, String> headers = new HashMap<String, String>();
+    static HashMap<String, String> getHeader() {
+        HashMap<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         headers.put("X-Cassandra-Token", Cassandra_Token);
         headers.put("Accept", "application/json");
         return headers;
     }
 
-    void insertVolley(Context context, String usernameStr, String foodnameStr, String caloriesStr, byte[] imageBytes, String typeStr, String preperationtimeStr, String descriptionStr, String rating) {
+    void insertVolley(Context context, String usernameStr, String foodnameStr, String caloriesStr, byte[] imageBytes, String typeStr, String preparationTimeStr, String descriptionStr, String rating) {
         Map<String, String> params = new HashMap<>();
         String primaryKey = generateUniqueId();
         params.put("id", primaryKey);
@@ -61,7 +58,7 @@ public class AstraHelper {
         params.put("calories", caloriesStr);
         params.put("image", Base64.encodeToString(imageBytes, Base64.DEFAULT));
         params.put("type", typeStr);
-        params.put("preparationtime", preperationtimeStr);
+        params.put("preparationtime", preparationTimeStr);
         params.put("description", descriptionStr);
         params.put("rating", rating);
 
@@ -72,18 +69,26 @@ public class AstraHelper {
         RequestQueue queue = Volley.newRequestQueue(context);
 
         Log.d("AstraHelper", "Constructed URL: " + insertUrl);
+        Log.d("AstraHelper", "Request Payload: " + postdata.toString());
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, insertUrl, postdata,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        // Handle response if needed
+                        // Handle success response
+                        Log.d("AstraHelper", "Response: " + response.toString());
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("OnErrorResponse", error.toString());
+                        // Handle error response
+                        Log.e("AstraHelper", "Error: " + error.toString());
+                        if (error.networkResponse != null) {
+                            Log.e("AstraHelper", "Error Response Code: " + error.networkResponse.statusCode);
+                            Log.e("AstraHelper", "Error Response Data: " + new String(error.networkResponse.data));
+                            // Additional error details from error.networkResponse
+                        }
                     }
                 }) {
             @Override
@@ -139,6 +144,11 @@ public class AstraHelper {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.e("OnErrorResponse", error.toString());
+                        if (error.networkResponse != null) {
+                            Log.e("AstraHelper", "Error Response Code: " + error.networkResponse.statusCode);
+                            Log.e("AstraHelper", "Error Response Data: " + new String(error.networkResponse.data));
+                            // Additional error details from error.networkResponse
+                        }
                     }
                 }) {
             @Override
@@ -152,7 +162,6 @@ public class AstraHelper {
                 return super.parseNetworkResponse(response);
             }
         };
-        // Add JsonObjectRequest to the request queue
         queue.add(jsonObjectRequest);
     }
 
@@ -197,9 +206,9 @@ public class AstraHelper {
         queue.add(jsonObjectRequest);
     }
 
-    private void getByIDVolleyLogin(String name) {
-        String url = AstraHelper.Loginurl + name; //Query by id
-        RequestQueue queue = Volley.newRequestQueue(this);
+    private void getByIDVolleyLogin(Context context, String name) {
+        String url = AstraHelper.Loginurl + name;
+        RequestQueue queue = Volley.newRequestQueue(context);
         // Use GET REST api call
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
