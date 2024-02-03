@@ -51,8 +51,7 @@ public class AstraHelper {
 
     void insertVolley(Context context, String usernameStr, String foodnameStr, String caloriesStr, byte[] imageBytes, String typeStr, String preparationTimeStr, String descriptionStr, String rating) {
         Map<String, String> params = new HashMap<>();
-        String primaryKey = generateUniqueId();
-        params.put("id", primaryKey);
+        // Remove generating UUID
         params.put("username", usernameStr);
         params.put("foodname", foodnameStr);
         params.put("calories", caloriesStr);
@@ -62,8 +61,7 @@ public class AstraHelper {
         params.put("description", descriptionStr);
         params.put("rating", rating);
 
-        // Construct the URL by directly appending the UUID to the base URL
-        String insertUrl = url + "/" + primaryKey;
+        String insertUrl = url;
 
         JSONObject postdata = new JSONObject(params);
         RequestQueue queue = Volley.newRequestQueue(context);
@@ -85,8 +83,8 @@ public class AstraHelper {
                         // Handle error response
                         Log.e("AstraHelper", "Error: " + error.toString());
                         if (error.networkResponse != null) {
-                            Log.e("AstraHelper", "Error Response Code: " + error.networkResponse.statusCode);
-                            Log.e("AstraHelper", "Error Response Data: " + new String(error.networkResponse.data));
+                            Log.e("Insert", "Error Response Code: " + error.networkResponse.statusCode);
+                            Log.e("Insert", "Error Response Data: " + new String(error.networkResponse.data));
                             // Additional error details from error.networkResponse
                         }
                     }
@@ -114,7 +112,6 @@ public class AstraHelper {
                                 LocalDBHelper localdb = new LocalDBHelper();
                                 for (int i = 0; i < count; i++) {
                                     try {
-                                        Integer Sqlid = data.getJSONObject(i).getInt("ID");
                                         String Sqlusername = data.getJSONObject(i).getString("Username");
                                         String Sqlfoodname = data.getJSONObject(i).getString("foodname");
                                         String Sqlcalories = data.getJSONObject(i).getString("calories");
@@ -124,7 +121,7 @@ public class AstraHelper {
                                         String Sqldescription = data.getJSONObject(i).getString("description");
                                         Integer Sqlrating = data.getJSONObject(i).getInt("rating");
 
-                                        localdb.insertRecipe(Sqlid, Sqlusername, Sqlfoodname, Sqlcalories, Sqlimage, Sqltype, Sqlpreparationtime, Sqldescription, String.valueOf(Sqlrating));
+                                        localdb.insertRecipe(Sqlusername, Sqlfoodname, Sqlcalories, Sqlimage, Sqltype, Sqlpreparationtime, Sqldescription, String.valueOf(Sqlrating));
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                         // Handle JSONException (parsing individual recipe) if needed
@@ -145,8 +142,8 @@ public class AstraHelper {
                     public void onErrorResponse(VolleyError error) {
                         Log.e("OnErrorResponse", error.toString());
                         if (error.networkResponse != null) {
-                            Log.e("AstraHelper", "Error Response Code: " + error.networkResponse.statusCode);
-                            Log.e("AstraHelper", "Error Response Data: " + new String(error.networkResponse.data));
+                            Log.e("GetAll", "Error Response Code: " + error.networkResponse.statusCode);
+                            Log.e("GetAll", "Error Response Data: " + new String(error.networkResponse.data));
                             // Additional error details from error.networkResponse
                         }
                     }
@@ -165,15 +162,8 @@ public class AstraHelper {
         queue.add(jsonObjectRequest);
     }
 
-    private static String generateUniqueId() {
-        // Generate a unique ID using UUID (Universally Unique Identifier)
-        return UUID.randomUUID().toString();
-    }
-
     void insertVolleyLogin(Context context,String NameofUser, Integer Password) {
         Map<String, String> params = new HashMap<>();
-        String id = generateUniqueId();
-        params.put("id", id);
         params.put("NameofUser", NameofUser);
         params.put("Password", String.valueOf(Password));
 

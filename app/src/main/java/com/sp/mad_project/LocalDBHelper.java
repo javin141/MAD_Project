@@ -30,7 +30,7 @@ public class LocalDBHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE =
             "CREATE TABLE " + TABLE_NAME + " (" +
-                    COLUMN_ID + " INTEGER," +
+                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     COLUMN_NAME + " TEXT," +
                     COLUMN_CALORIES + " TEXT," +
                     COLUMN_PREP_TIME + " TEXT," +
@@ -59,10 +59,9 @@ public class LocalDBHelper extends SQLiteOpenHelper {
         // Upgrade logic goes here
     }
 
-    public void insertRecipe(Integer id, String username, String name, String calories, byte[] image, String type, String prepTime, String description, String rating) {
+    public void insertRecipe(String username, String name, String calories, byte[] image, String type, String prepTime, String description, String rating) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COLUMN_ID, String.valueOf(id));
         values.put(COLUMN_USERNAME, username);
         values.put(COLUMN_NAME, name);
         values.put(COLUMN_CALORIES, calories);
