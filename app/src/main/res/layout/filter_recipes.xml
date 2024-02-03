@@ -1,6 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="type" />
+
+        <GridLayout
+            android:id="@+id/typeGridLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/typeLabel"
+            android:layout_marginTop="0dp"
+            android:columnCount="2"
+
+            android:columnOrderPreserved="false">
+
+            <RadioButton
+                android:id="@+id/radioMain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Main Course" />
+
+            <RadioButton
+                android:id="@+id/radioSide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Side Dish" />
+
+            <RadioButton
+                android:id="@+id/radioSnacks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Snack" />
+
+            <RadioButton
+                android:id="@+id/radioDesserts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dessert" />
+
+            <RadioButton
+                android:id="@+id/radioDrinks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Drink" />
+
+            <RadioButton
+                android:id="@+id/radioOther"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Other" />
+        </GridLayout>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Calories:" />
+
+        <EditText
+            android:id="@+id/editTextText2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="kcal"
+            android:inputType="text" />
+
+        <androidx.gridlayout.widget.GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:columnCount="2">
+
+            <RadioButton
+                android:id="@+id/radioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="less than" />
+
+            <RadioButton
+                android:id="@+id/radioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="more than" />
+        </androidx.gridlayout.widget.GridLayout>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Preparationtime" />
+
+        <EditText
+            android:id="@+id/editTextText2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="minutes"
+            android:inputType="text" />
+
+        <androidx.gridlayout.widget.GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:columnCount="2">
+
+            <RadioButton
+                android:id="@+id/radioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="less than" />
+
+            <RadioButton
+                android:id="@+id/radioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="more than" />
+        </androidx.gridlayout.widget.GridLayout>
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save filters" />
+
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
