@@ -17,10 +17,19 @@ public class Homepage extends AppCompatActivity {
 
         // Find Recipes Button
         Button findRecipesButton = findViewById(R.id.findRecipesButton);
+        Button cookingTimerButton = findViewById(R.id.cookingTimerButton);
         findRecipesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Homepage.this, RecipeList.class);
+                startActivity(intent);
+            }
+        });
+
+        cookingTimerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Homepage.this, CookingTimer.class);
                 startActivity(intent);
             }
         });

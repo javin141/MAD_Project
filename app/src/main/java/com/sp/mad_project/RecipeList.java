@@ -2,6 +2,7 @@ package com.sp.mad_project;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -59,10 +60,18 @@ public class RecipeList extends AppCompatActivity {
         if (NetworkUtils.isNetworkAvailable(this)) {
             // If there is internet, fetch data from AstraDB and update SQLite database
             AstraHelper.getAllRecipesByVolley(this);
-            // Then retrieve recipes from SQLite database and display them
-            List<Recipe> recipes = localDBHelper.getAllRecipes();
-            // Update the RecyclerView or UI with the recipes
-            updateUI(recipes);
+
+            // Introduce a delay of 3 seconds before retrieving from SQLite database
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    // Retrieve recipes from SQLite database
+                    List<Recipe> recipes = localDBHelper.getAllRecipes();
+                    // Update the RecyclerView or UI with the recipes
+                    updateUI(recipes);
+                }
+            }, 3000); // 3000 milliseconds = 3 seconds
         } else {
             // If there is no internet, retrieve recipes from SQLite database and display them
             List<Recipe> recipes = localDBHelper.getAllRecipes();

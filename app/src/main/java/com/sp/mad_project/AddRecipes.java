@@ -42,6 +42,7 @@ public class AddRecipes extends AppCompatActivity {
         setContentView(R.layout.add_recipes);
 
         etRecipeName = findViewById(R.id.recipeNameInput);
+        etRecipeName.setEnabled(true);
         etCalories = findViewById(R.id.caloriesInput);
         etPrepTime = findViewById(R.id.prepTimeInput);
         etDescription = findViewById(R.id.descriptionInput);
@@ -68,6 +69,8 @@ public class AddRecipes extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent.hasExtra("isEditing") && intent.getBooleanExtra("isEditing", false)) {
             isEditing = true;
+
+            etRecipeName.setEnabled(false);
 
             // Retrieve and set existing recipe details
             recipeId = intent.getLongExtra("recipeId", 0);
@@ -182,6 +185,8 @@ public class AddRecipes extends AppCompatActivity {
         }
 
         Toast.makeText(this, "Recipe saved successfully", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, Homepage.class);
+        startActivity(intent);
         finish(); // Close the activity after saving
     }
 

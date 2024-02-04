@@ -3,6 +3,7 @@ package com.sp.mad_project;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -92,46 +93,16 @@ public class RecipeInfo extends AppCompatActivity {
 
                 // Set timer button click listener
                 timerButton.setOnClickListener(v -> {
-                    // Handle cooking timer logic
-                    Toast.makeText(RecipeInfo.this, "Cooking Timer functionality goes here", Toast.LENGTH_SHORT).show();
+                     Intent intent2 = new Intent(RecipeInfo.this, CookingTimer.class);
+                     startActivity(intent2);
+                    Toast.makeText(RecipeInfo.this, "Opening Timer", Toast.LENGTH_SHORT).show();
                 });
 
-                // Set upvote button click listener
-                upvoteButton.setOnClickListener(v -> {
-                    if (!isUpvoted) {
-                        // If not upvoted, upvote the recipe
-                        localDBHelper.upvoteRecipe(recipeId);
-                        isUpvoted = true;
-                    } else {
-                        // If already upvoted, remove the upvote
-                        localDBHelper.removeUpvote(recipeId);
-                        isUpvoted = false;
-                    }
-                    // Update UI
-                    updateRatingUI();
-                });
-
-                // Update UI
-                updateRatingUI();
             } else {
                 // Log an error and finish the activity if the recipe is null
                 Log.e("RecipeInfo", "Recipe object is null");
                 finish();
             }
         }
-    }
-
-    // Method to update the rating UI
-    private void updateRatingUI() {
-        // Fetch the latest rating from the database
-        int rating = localDBHelper.getRecipeRating(recipeId);
-
-        // Update the rating text view
-        ratingTextView.setText("Rating: " + rating);
-
-        // Update the upvote button text
-        upvoteButton.setText("Upvote (" + (isUpvoted ? 1 : 0) + ")");
-
-        // Update the downvote button text}
     }
 }

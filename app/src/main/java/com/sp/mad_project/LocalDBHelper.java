@@ -184,38 +184,5 @@ public class LocalDBHelper extends SQLiteOpenHelper {
         return recipes;
     }
 
-    public void upvoteRecipe(long recipeId) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_RATING, COLUMN_RATING + " + 1");
-        db.update(TABLE_NAME, values, COLUMN_ID + " = ?", new String[]{String.valueOf(recipeId)});
-        db.close();
-    }
-
-    public void removeUpvote(long recipeId) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_RATING, COLUMN_RATING + " - 1");
-        db.update(TABLE_NAME, values, COLUMN_ID + " = ?", new String[]{String.valueOf(recipeId)});
-        db.close();
-    }
-
-    @SuppressLint("Range")
-    public int getRecipeRating(long recipeId) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT " + COLUMN_RATING + " FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + " = ?", new String[]{String.valueOf(recipeId)});
-
-        int rating = 0;
-        if (cursor != null && cursor.moveToFirst()) {
-            rating = cursor.getInt(cursor.getColumnIndex(COLUMN_RATING));
-        }
-
-        if (cursor != null) {
-            cursor.close();
-        }
-
-        return rating;
-    }
-
 }
 
