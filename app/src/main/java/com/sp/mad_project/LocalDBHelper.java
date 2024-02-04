@@ -14,7 +14,6 @@ import java.util.HashSet;
 import java.util.HashMap;
 import java.util.Map;
 
-
 public class LocalDBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "recipes_database";
@@ -34,6 +33,7 @@ public class LocalDBHelper extends SQLiteOpenHelper {
     public static final String COLUMN_IMAGE = "image";
     public static final String COLUMN_RATING = "rating";
     public static final String COLUMN_USERNAME = "username";
+    public static final String COLUMN_UPVOTE = "upVote";
 
     private static final String CREATE_TABLE =
             "CREATE TABLE " + TABLE_NAME + " (" +
@@ -45,7 +45,8 @@ public class LocalDBHelper extends SQLiteOpenHelper {
                     COLUMN_DESCRIPTION + " TEXT," +
                     COLUMN_IMAGE + " BLOB," +
                     COLUMN_RATING + " TEXT," +
-                    COLUMN_USERNAME + " TEXT)";
+                    COLUMN_USERNAME + " TEXT," +
+                    COLUMN_UPVOTE + " INTEGER)";
 
     public LocalDBHelper() {
         super(null, DATABASE_NAME, null, DATABASE_VERSION);
