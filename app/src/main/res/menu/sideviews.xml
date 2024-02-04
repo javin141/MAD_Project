@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group
+        android:id="@+id/menu_top"
+        android:checkableBehaviour="single" >
+        <item
+            android:id="@+id/sidenav_login"
+            android:icon="@drawable/baseline_account_circle_24"
+            android:title="Login" />
+    </group>
+    <group
+        android:id="@+id/menu_secondary"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <item
+            android:id="@+id/sidenav_help"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/baseline_emoji_people_24"
+            android:title="help" />
+        <item
+            android:id="@+id/sidenav_about"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/baseline_info_outline_24"
+            android:title="about" />
+        <item
+            android:id="@+id/sidenav_exit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/baseline_backspace_24"
+            android:title="exit" />
+    </group>
+</menu>
