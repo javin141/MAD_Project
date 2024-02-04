@@ -189,7 +189,7 @@ public class AstraHelper {
         JSONObject putdata = new JSONObject(params);
         RequestQueue queue = Volley.newRequestQueue(context);
         // Rest api link
-        String url = AstraHelper.url + "/" + foodnameStr ; // Update by id
+        String url = AstraHelper.url + foodnameStr ; // Update by id
         // Use PUT REST api call
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, putdata,
                 new Response.Listener<JSONObject>() {
