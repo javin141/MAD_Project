@@ -5,7 +5,7 @@
 
     <group
         android:id="@+id/menu_top"
-        android:checkableBehaviour="single" >
+         >
         <item
             android:id="@+id/sidenav_login"
             android:icon="@drawable/baseline_account_circle_24"
