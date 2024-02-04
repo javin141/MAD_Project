@@ -50,7 +50,7 @@ public class AstraHelper {
         return headers;
     }
 
-    void insertVolley(Context context, String usernameStr, String foodnameStr, String caloriesStr, byte[] imageBytes, String typeStr, String preparationTimeStr, String descriptionStr, String rating) {
+    void insertVolley(Context context,String usernameStr, String foodnameStr, String caloriesStr, byte[] imageBytes, String typeStr, String preparationTimeStr, String descriptionStr, String rating) {
         Map<String, String> params = new HashMap<>();
         // Remove generating UUID
         params.put("username", usernameStr);
@@ -165,6 +165,45 @@ public class AstraHelper {
         queue.add(jsonObjectRequest);
     }
 
+    private void updateVolley(Context context,String usernameStr, String foodnameStr, String caloriesStr, byte[] imageBytes, String typeStr, String preparationTimeStr, String descriptionStr, String rating) {
+        // Create a JSON object from the parameters
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("username", usernameStr);
+        params.put("foodname", foodnameStr);
+        params.put("calories", caloriesStr);
+        params.put("imageresource", Base64.encodeToString(imageBytes, Base64.DEFAULT));
+        params.put("type", typeStr);
+        params.put("preparationtime", preparationTimeStr);
+        params.put("description", descriptionStr);
+        params.put("rating", rating);
+        JSONObject putdata = new JSONObject(params);
+        RequestQueue queue = Volley.newRequestQueue(context);
+        // Rest api link
+        String url = AstraHelper.url + foodnameStr ; // Update by id
+        // Use PUT REST api call
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, putdata,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+                        Log.e("OnErrorResponse", error.toString());
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                return AstraHelper.getHeader();
+            }
+        };
+        // add JsonObjectRequest to the RequestQueue
+        queue.add(jsonObjectRequest);
+    }
+
+   // Login volleys
     void insertVolleyLogin(Context context,String NameofUser, Integer Password) {
         Map<String, String> params = new HashMap<>();
         params.put("NameofUser", NameofUser);
