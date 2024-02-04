@@ -179,7 +179,6 @@ public class AstraHelper {
         // Create a JSON object from the parameters
         Map<String, String> params = new HashMap<String, String>();
         params.put("username", usernameStr);
-        params.put("foodname", foodnameStr);
         params.put("calories", caloriesStr);
         params.put("imageresource", Base64.encodeToString(imageBytes, Base64.DEFAULT));
         params.put("type", typeStr);
@@ -202,6 +201,10 @@ public class AstraHelper {
                     public void onErrorResponse(VolleyError error) {
                         // TODO: Handle error
                         Log.e("OnErrorResponse", error.toString());
+                        if (error.networkResponse != null) {
+                            Log.e("GetAll", "Error Response Code: " + error.networkResponse.statusCode);
+                            Log.e("GetAll", "Error Response Data: " + new String(error.networkResponse.data));
+                        }
                     }
                 }) {
             @Override
