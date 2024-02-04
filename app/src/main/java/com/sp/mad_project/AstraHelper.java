@@ -1,5 +1,7 @@
 package com.sp.mad_project;
 
+import static android.app.PendingIntent.getActivity;
+
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Base64;
