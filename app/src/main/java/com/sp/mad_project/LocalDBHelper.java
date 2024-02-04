@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class LocalDBHelper extends SQLiteOpenHelper {
 
@@ -19,6 +22,7 @@ public class LocalDBHelper extends SQLiteOpenHelper {
 
     private Context context;
     private Set<Long> votedRecipeIds = new HashSet<>();
+    private Map<Long, Boolean> voteStatusMap = new HashMap<>();
 
     public static final String TABLE_NAME = "recipes";
     public static final String COLUMN_ID = "_id";
@@ -144,6 +148,7 @@ public class LocalDBHelper extends SQLiteOpenHelper {
         return recipe;
     }
 
+    @SuppressLint("Range")
     public List<Recipe> Recipesfilter() {
         List<Recipe> recipes = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -179,48 +184,64 @@ public class LocalDBHelper extends SQLiteOpenHelper {
         return recipes;
     }
 
+    public void upvoteRecipe(long recipeId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_RATING, COLUMN_RATING + " + 1");
+        db.update(TABLE_NAME, values, COLUMN_ID + " = ?", new String[]{String.valueOf(recipeId)});
+        db.close();
+    }
+
+    public void downvoteRecipe(long recipeId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_RATING, COLUMN_RATING + " - 1");
+        db.update(TABLE_NAME, values, COLUMN_ID + " = ?", new String[]{String.valueOf(recipeId)});
+        db.close();
+    }
+
+
+
+    public void removeUpvote(long recipeId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_RATING, COLUMN_RATING + " - 1");
+        db.update(TABLE_NAME, values, COLUMN_ID + " = ?", new String[]{String.valueOf(recipeId)});
+        db.close();
+    }
+
+    public boolean isRecipeUpvoted(long recipeId) {
+        return votedRecipeIds.contains(recipeId) && voteStatusMap.get(recipeId);
+    }
+
+    public void removeDownvote(long recipeId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_RATING, COLUMN_RATING + " + 1");
+        db.update(TABLE_NAME, values, COLUMN_ID + " = ?", new String[]{String.valueOf(recipeId)});
+        db.close();
+    }
+
+    public boolean isRecipeDownvoted(long recipeId) {
+        return votedRecipeIds.contains(recipeId) && !voteStatusMap.get(recipeId);
+    }
+
     @SuppressLint("Range")
     public int getRecipeRating(long recipeId) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = null;
+        Cursor cursor = db.rawQuery("SELECT " + COLUMN_RATING + " FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + " = ?", new String[]{String.valueOf(recipeId)});
+
         int rating = 0;
+        if (cursor != null && cursor.moveToFirst()) {
+            rating = cursor.getInt(cursor.getColumnIndex(COLUMN_RATING));
+        }
 
-        try {
-            cursor = db.rawQuery("SELECT " + COLUMN_RATING + " FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + " = ?", new String[]{String.valueOf(recipeId)});
-
-            if (cursor != null && cursor.moveToFirst()) {
-                rating = cursor.getInt(cursor.getColumnIndex(COLUMN_RATING));
-            }
-        } finally {
-            if (cursor != null && !cursor.isClosed()) {
-                cursor.close();
-            }
+        if (cursor != null) {
+            cursor.close();
         }
 
         return rating;
     }
 
-    public void updateRating(long recipeId, int newRating) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_RATING, newRating);
-
-        db.update(TABLE_NAME, values, COLUMN_ID + " = ?", new String[]{String.valueOf(recipeId)});
-        db.close();
-    }
-
-    public void voteForRecipe(long recipeId, String username) {
-        if (!hasVoted(recipeId)) {
-            votedRecipeIds.add(recipeId);
-        }
-    }
-
-    public void removeVote(long recipeId) {
-        votedRecipeIds.remove(recipeId);
-    }
-
-    public boolean hasVoted(long recipeId) {
-        return votedRecipeIds.contains(recipeId);
-    }
 }
 

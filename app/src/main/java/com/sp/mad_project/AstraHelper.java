@@ -125,6 +125,14 @@ public class AstraHelper {
                                         String Sqldescription = data.getJSONObject(i).getString("description");
                                         Integer Sqlrating = data.getJSONObject(i).getInt("rating");
 
+                                        Log.d("JSON_CONTENTS", "Username: " + Sqlusername +
+                                                ", FoodName: " + Sqlfoodname +
+                                                ", Calories: " + Sqlcalories +
+                                                ", Type: " + Sqltype +
+                                                ", PreparationTime: " + Sqlpreparationtime +
+                                                ", Description: " + Sqldescription +
+                                                ", Rating: " + Sqlrating);
+
                                         localdb.insertRecipe(Sqlusername, Sqlfoodname, Sqlcalories, Sqlimage, Sqltype, Sqlpreparationtime, Sqldescription, String.valueOf(Sqlrating));
                                     }
                                 } catch (JSONException e) {
