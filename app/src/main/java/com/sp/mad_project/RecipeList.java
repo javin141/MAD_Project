@@ -35,12 +35,6 @@ public class RecipeList extends AppCompatActivity {
             startActivity(intent);
         });
 
-        FloatingActionButton filterBtn = findViewById(R.id.filterBtn);
-        filterBtn.setOnClickListener(view {
-            Intent intent = new Intent(RecipeList.this, )
-        });
-
-
         // Button navigation logic
         findViewById(R.id.btnAbout).setOnClickListener(view -> {
             // Handle the "About" button click
@@ -85,7 +79,7 @@ public class RecipeList extends AppCompatActivity {
         recipeAdapter.setOnItemClickListener(recipeId -> {
             // Handle item click, open RecipeInfo activity, etc.
             Intent intent = new Intent(RecipeList.this, RecipeInfo.class);
-            intent.putExtra("recipeId", recipeId);
+            intent.putExtra("recipe_ID", recipeId);
             startActivity(intent);
         });
     }

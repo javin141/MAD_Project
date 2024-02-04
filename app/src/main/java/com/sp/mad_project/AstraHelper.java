@@ -173,7 +173,7 @@ public class AstraHelper {
         queue.add(jsonObjectRequest);
     }
 
-    private void updateVolley(Context context,String usernameStr, String foodnameStr, String caloriesStr, byte[] imageBytes, String typeStr, String preparationTimeStr, String descriptionStr, String rating) {
+    public void updateVolley(Context context,String usernameStr, String foodnameStr, String caloriesStr, byte[] imageBytes, String typeStr, String preparationTimeStr, String descriptionStr, String rating) {
         // Create a JSON object from the parameters
         Map<String, String> params = new HashMap<String, String>();
         params.put("username", usernameStr);

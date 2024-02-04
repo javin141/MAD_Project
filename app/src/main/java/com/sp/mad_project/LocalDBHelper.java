@@ -192,38 +192,12 @@ public class LocalDBHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void downvoteRecipe(long recipeId) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_RATING, COLUMN_RATING + " - 1");
-        db.update(TABLE_NAME, values, COLUMN_ID + " = ?", new String[]{String.valueOf(recipeId)});
-        db.close();
-    }
-
-
-
     public void removeUpvote(long recipeId) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_RATING, COLUMN_RATING + " - 1");
         db.update(TABLE_NAME, values, COLUMN_ID + " = ?", new String[]{String.valueOf(recipeId)});
         db.close();
-    }
-
-    public boolean isRecipeUpvoted(long recipeId) {
-        return votedRecipeIds.contains(recipeId) && voteStatusMap.get(recipeId);
-    }
-
-    public void removeDownvote(long recipeId) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_RATING, COLUMN_RATING + " + 1");
-        db.update(TABLE_NAME, values, COLUMN_ID + " = ?", new String[]{String.valueOf(recipeId)});
-        db.close();
-    }
-
-    public boolean isRecipeDownvoted(long recipeId) {
-        return votedRecipeIds.contains(recipeId) && !voteStatusMap.get(recipeId);
     }
 
     @SuppressLint("Range")

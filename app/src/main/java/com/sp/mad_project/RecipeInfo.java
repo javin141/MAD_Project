@@ -11,6 +11,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class RecipeInfo extends AppCompatActivity {
@@ -18,7 +20,6 @@ public class RecipeInfo extends AppCompatActivity {
     private LocalDBHelper localDBHelper;
     private long recipeId;
     private boolean isUpvoted = false;
-    private boolean isDownvoted = false;
     private TextView usernameTextView, ratingTextView, recipeNameTextView, caloriesTextView, typeTextView, prepTimeTextView, descriptionTextView;
     private ImageView recipeImageView;
     private Button upvoteButton, downvoteButton, editButton, timerButton;
@@ -41,14 +42,13 @@ public class RecipeInfo extends AppCompatActivity {
         recipeImageView = findViewById(R.id.recipeInfoImage);
 
         upvoteButton = findViewById(R.id.upvoteButton);
-        downvoteButton = findViewById(R.id.downvoteButton);
         editButton = findViewById(R.id.editButton);
         timerButton = findViewById(R.id.timerButton);
 
         // Get the recipeId from the intent
         Intent intent = getIntent();
-        if (intent.hasExtra("recipeId")) {
-            recipeId = intent.getLongExtra("recipeId", 0);
+        if (intent.hasExtra("recipe_ID")) {
+            recipeId = intent.getLongExtra("recipe_ID", 0);
 
             // Fetch details from the database using recipeId
             Recipe recipe = localDBHelper.getRecipe(recipeId);
@@ -71,9 +71,22 @@ public class RecipeInfo extends AppCompatActivity {
 
                 // Set edit button click listener
                 editButton.setOnClickListener(v -> {
-                    // Navigate to AddRecipe activity with the recipe details for editing
+                    // Create an intent to open AddRecipes activity
                     Intent editIntent = new Intent(RecipeInfo.this, AddRecipes.class);
-                    editIntent.putExtra("recipeId", recipe.getId());
+
+                    // Pass recipe details to AddRecipes activity
+                    editIntent.putExtra("recipeId", recipeId);
+                    editIntent.putExtra("recipeName", recipe.getName());
+                    editIntent.putExtra("calories", String.valueOf(recipe.getCalories()));
+                    editIntent.putExtra("prepTime", recipe.getPrepTime());
+                    editIntent.putExtra("description", recipe.getDescription());
+                    editIntent.putExtra("type", recipe.getType());
+                    editIntent.putExtra("imageBytes", recipe.getImage());
+
+                    // Set the isEditing flag to true
+                    editIntent.putExtra("isEditing", true);
+
+                    // Start the AddRecipes activity
                     startActivity(editIntent);
                 });
 
@@ -98,24 +111,6 @@ public class RecipeInfo extends AppCompatActivity {
                     updateRatingUI();
                 });
 
-                // Set downvote button click listener
-                downvoteButton.setOnClickListener(v -> {
-                    if (!isDownvoted) {
-                        // If not downvoted, downvote the recipe
-                        localDBHelper.downvoteRecipe(recipeId);
-                        isDownvoted = true;
-                    } else {
-                        // If already downvoted, remove the downvote
-                        localDBHelper.removeDownvote(recipeId);
-                        isDownvoted = false;
-                    }
-                    // Update UI
-                    updateRatingUI();
-                });
-
-                // Fetch initial downvote status
-                isDownvoted = localDBHelper.isRecipeDownvoted(recipeId);
-
                 // Update UI
                 updateRatingUI();
             } else {
@@ -137,7 +132,6 @@ public class RecipeInfo extends AppCompatActivity {
         // Update the upvote button text
         upvoteButton.setText("Upvote (" + (isUpvoted ? 1 : 0) + ")");
 
-        // Update the downvote button text
-        downvoteButton.setText("Downvote (" + (isUpvoted ? 0 : 1) + ")");
+        // Update the downvote button text}
     }
 }

@@ -29,6 +29,7 @@ public class AddRecipes extends AppCompatActivity {
     private TextInputEditText etRecipeName, etCalories, etPrepTime, etDescription;
     private ImageView imageView;
     private RadioButton radioMain, radioSide, radioSnacks, radioDesserts, radioDrinks, radioOther;
+    private LocalDBHelper localDBHelper;
 
     private static final int PICK_IMAGE = 1;
     private boolean isEditing = false;
@@ -61,28 +62,27 @@ public class AddRecipes extends AppCompatActivity {
         Button btnSaveRecipe = findViewById(R.id.saveButton);
         btnSaveRecipe.setOnClickListener(view -> saveRecipe());
 
-        // Check if this activity is opened for editing an existing recipe
+        localDBHelper = new LocalDBHelper(this);
+
+        // Check if it's an editing mode
         Intent intent = getIntent();
-        if (intent.hasExtra("recipeDetails")) {
-            Map<String, Object> recipeDetails = (Map<String, Object>) intent.getSerializableExtra("recipeDetails");
+        if (intent.hasExtra("isEditing") && intent.getBooleanExtra("isEditing", false)) {
             isEditing = true;
-            recipeId = (long) recipeDetails.get(LocalDBHelper.COLUMN_ID);
 
-            // Set the recipe details to the UI elements
-            etRecipeName.setText(recipeDetails.get(LocalDBHelper.COLUMN_NAME).toString());
-            etCalories.setText(recipeDetails.get(LocalDBHelper.COLUMN_CALORIES).toString());
-            etPrepTime.setText(recipeDetails.get(LocalDBHelper.COLUMN_PREP_TIME).toString());
-            etDescription.setText(recipeDetails.get(LocalDBHelper.COLUMN_DESCRIPTION).toString());
+            // Retrieve and set existing recipe details
+            recipeId = intent.getLongExtra("recipeId", 0);
+            etRecipeName.setText(intent.getStringExtra("recipeName"));
+            etCalories.setText(intent.getStringExtra("calories"));
+            etPrepTime.setText(intent.getStringExtra("prepTime"));
+            etDescription.setText(intent.getStringExtra("description"));
+            setRecipeTypeRadioButton(intent.getStringExtra("type"));
 
-            // For loading the image from the database
-            byte[] imageBytes = (byte[]) recipeDetails.get(LocalDBHelper.COLUMN_IMAGE);
+            byte[] imageBytes = intent.getByteArrayExtra("imageBytes");
             if (imageBytes != null) {
-                imageView.setImageBitmap(BitmapUtils.getImage(imageBytes));
+                // Set the existing image to the ImageView
+                Bitmap existingImageBitmap = BitmapUtils.getImage(imageBytes);
+                imageView.setImageBitmap(existingImageBitmap);
             }
-
-            // Set the type radio button based on the recipe type
-            String recipeType = recipeDetails.get(LocalDBHelper.COLUMN_TYPE).toString();
-            setRecipeTypeRadioButton(recipeType);
         }
     }
 
@@ -175,7 +175,7 @@ public class AddRecipes extends AppCompatActivity {
         AstraHelper astraHelper = new AstraHelper(); // Create an instance of AstraHelper
         if (isEditing) {
             // Editing an existing recipe
-            // PLease Implement
+            astraHelper.updateVolley(this, username, recipeName, calories, imageBytes, type, prepTime, description, rating);
         } else {
             // Inserting a new recipe
             astraHelper.insertVolley(this, username, recipeName, calories, imageBytes, type, prepTime, description, rating);
@@ -203,8 +203,5 @@ public class AddRecipes extends AppCompatActivity {
             return "";
         }
     }
-
-
-
 
 }
