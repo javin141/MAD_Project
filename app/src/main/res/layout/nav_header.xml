@@ -9,9 +9,10 @@
     android:padding="16dp">
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="10dp"
-            android:layout_height="wrap_content"
-
+            android:layout_width="100dp"
+            android:layout_height="70dp"
+            android:paddingTop="16dp"
+            app:srcCompat="@drawable/baseline_food_bank_24"
              />
 
         <TextView
