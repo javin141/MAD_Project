@@ -10,24 +10,68 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp">
 
+        <!-- Back Button -->
         <ImageView
-            android:id="@+id/recipeInfoImage"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_below="@+id/backButton"
-            android:scaleType="centerCrop"
-            android:layout_marginBottom="16dp"/>
+            android:id="@+id/backButton"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:contentDescription="Back"
+            android:onClick="goBack"
+            android:src="@drawable/back" />
+
+        <!-- Music Button -->
+        <RelativeLayout
+            android:id="@+id/musicLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp">
+
+            <ImageView
+                android:id="@+id/musicButton"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:contentDescription="Music"
+                android:src="@drawable/music_icon" />
+
+            <TextView
+                android:id="@+id/musicStatusTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@id/musicButton"
+                android:text="Music Off"
+                android:textColor="#000000"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
 
         <!-- Username Overlay -->
         <androidx.cardview.widget.CardView
             android:id="@+id/usernameCardView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:padding="4dp"
             app:cardBackgroundColor="#D7FFFFFF"
-            app:cardCornerRadius="4dp">
+            app:cardCornerRadius="4dp"
+            android:layout_below="@id/backButton"
+            android:layout_alignParentStart="true">
 
             <TextView
                 android:id="@+id/recipeInfoUsername"
@@ -46,12 +90,13 @@
             android:id="@+id/ratingCardView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginTop="8dp"
             android:padding="4dp"
             app:cardBackgroundColor="#D7FFFFFF"
-            app:cardCornerRadius="4dp">
+            app:cardCornerRadius="4dp"
+            android:layout_below="@id/backButton"
+            android:layout_alignParentEnd="true">
 
             <TextView
                 android:id="@+id/recipeInfoRating"
@@ -64,6 +109,14 @@
                 android:textSize="14sp"
                 android:textStyle="bold|italic" />
         </androidx.cardview.widget.CardView>
+
+        <ImageView
+            android:id="@+id/recipeInfoImage"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@+id/backButton"
+            android:scaleType="centerCrop"
+            android:layout_marginBottom="16dp"/>
 
         <!-- Upvote and Downvote Buttons -->
         <Button
@@ -157,12 +210,29 @@
                 android:textSize="16sp"/>
         </androidx.cardview.widget.CardView>
 
+        <Button
+            android:id="@+id/timerButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/prepTimeCardView"
+            android:layout_marginTop="16dp"
+            android:text="Cooking Timer" />
+
+        <Button
+            android:id="@+id/ttsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/prepTimeCardView"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="16dp"
+            android:text="Text-to-Speech" />
+
         <!-- Description Box -->
         <androidx.cardview.widget.CardView
             android:id="@+id/descriptionCardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/prepTimeCardView"
+            android:layout_below="@id/timerButton"
             android:layout_marginTop="16dp"
             app:cardCornerRadius="8dp">
 
@@ -174,14 +244,5 @@
                 android:text="Recipe Description"
                 android:textSize="16sp" />
         </androidx.cardview.widget.CardView>
-
-        <!-- Cooking Timer Button -->
-        <Button
-            android:id="@+id/timerButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/descriptionCardView"
-            android:layout_marginTop="16dp"
-            android:text="Cooking Timer" />
     </RelativeLayout>
 </ScrollView>

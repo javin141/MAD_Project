@@ -38,7 +38,7 @@ public class RecipeList extends AppCompatActivity {
 
         // Button navigation logic
         findViewById(R.id.btnAbout).setOnClickListener(view -> {
-            // Handle the "About" button click
+            startActivity(new Intent(RecipeList.this, HelpActivity.class));
         });
 
         findViewById(R.id.btnHome).setOnClickListener(view -> {
@@ -71,7 +71,7 @@ public class RecipeList extends AppCompatActivity {
                     // Update the RecyclerView or UI with the recipes
                     updateUI(recipes);
                 }
-            }, 3000); // 3000 milliseconds = 3 seconds
+            }, 2500);
         } else {
             // If there is no internet, retrieve recipes from SQLite database and display them
             List<Recipe> recipes = localDBHelper.getAllRecipes();

@@ -2,6 +2,7 @@ package com.sp.mad_project;
 
 import static android.app.PendingIntent.getActivity;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Base64;
@@ -213,6 +214,46 @@ public class AstraHelper {
             }
         };
         // add JsonObjectRequest to the RequestQueue
+        queue.add(jsonObjectRequest);
+    }
+
+    public void updateRecipeRating(Context context, String recipeName, int newRating) {
+        // Create a JSON object with the updated rating
+        Map<String, String> params = new HashMap<>();
+        params.put("rating", String.valueOf(newRating));
+        JSONObject putdata = new JSONObject(params);
+
+        // Construct the URL for the specific recipe by appending the recipeName to the base URL
+        String url = AstraHelper.url + recipeName;
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, putdata,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // Handle response if needed
+                        Log.d("AstraHelper", "Rating updated in Astradb. New Rating: " + newRating);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Handle error
+                        Log.e("AstraHelper", "Error updating rating: " + error.toString());
+                        if (error.networkResponse != null) {
+                            Log.e("UpdateRating", "Error Response Code: " + error.networkResponse.statusCode);
+                            Log.e("UpdateRating", "Error Response Data: " + new String(error.networkResponse.data));
+                        }
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                return AstraHelper.getHeader();
+            }
+        };
+
+        // Add JsonObjectRequest to the RequestQueue
         queue.add(jsonObjectRequest);
     }
 

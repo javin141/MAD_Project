@@ -1,68 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FAEED1">
 
-    <TextView
-        android:id="@+id/titleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
-        android:layout_centerHorizontal="true"
-        android:text="CookedIn"
-        android:textColor="#780202"
-        android:textSize="36sp"
-        android:textStyle="bold"
-        android:shadowColor="#FFFFFF"
-        android:shadowDx="1"
-        android:shadowDy="1"
-        android:shadowRadius="12" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/findRecipesButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Find Recipes"
-        android:layout_below="@id/titleTextView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="32dp"
-        android:backgroundTint="#4CAF50"
-        android:textColor="#FFFFFF" />
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="250dp"
+            android:shadowColor="#FFFFFF"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="12"
+            android:text="CookedIn"
+            android:textColor="#780202"
+            android:textSize="36sp"
+            android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/loginButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Login"
-        android:layout_below="@id/findRecipesButton"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="#2196F3"
-        android:textColor="#FFFFFF" />
+        <ImageView
+            android:id="@+id/openDrawerButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/menu"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:contentDescription="Open Drawer"
+            android:onClick="openDrawer"
+            />
 
-    <Button
-        android:id="@+id/cookingTimerButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Cooking Timer"
-        android:layout_below="@id/loginButton"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="#FF4081"
-        android:textColor="#FFFFFF" />
+        <Button
+            android:id="@+id/findRecipesButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Find Recipes"
+            android:layout_below="@id/titleTextView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="32dp"
+            android:backgroundTint="#4CAF50"
+            android:textColor="#FFFFFF" />
 
-    <Button
-        android:id="@+id/helpButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Help"
-        android:layout_below="@id/cookingTimerButton"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="#2196F3"
-        android:textColor="#FFFFFF" />
+        <Button
+            android:id="@+id/cookingTimerButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/findRecipesButton"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="#FF4081"
+            android:text="Cooking Timer"
+            android:textColor="#FFFFFF" />
+
+    </RelativeLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
@@ -74,4 +72,4 @@
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/sideviews"
         />
-</RelativeLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

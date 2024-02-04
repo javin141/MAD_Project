@@ -12,8 +12,6 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 public class RecipeInfo extends AppCompatActivity {
@@ -21,9 +19,11 @@ public class RecipeInfo extends AppCompatActivity {
     private LocalDBHelper localDBHelper;
     private long recipeId;
     private boolean isUpvoted = false;
-    private TextView usernameTextView, ratingTextView, recipeNameTextView, caloriesTextView, typeTextView, prepTimeTextView, descriptionTextView;
-    private ImageView recipeImageView;
-    private Button upvoteButton, downvoteButton, editButton, timerButton;
+    private TextView usernameTextView, ratingTextView, recipeNameTextView, caloriesTextView, typeTextView, prepTimeTextView, descriptionTextView, musicStatusTextView;
+    private ImageView recipeImageView, musicButton;
+    private Button upvoteButton, downvoteButton, editButton, timerButton, ttsButton;
+    private TextToSpeechManager ttsManager;
+    private boolean isMusicPlaying = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,6 +45,13 @@ public class RecipeInfo extends AppCompatActivity {
         upvoteButton = findViewById(R.id.upvoteButton);
         editButton = findViewById(R.id.editButton);
         timerButton = findViewById(R.id.timerButton);
+        ImageView backButton = findViewById(R.id.backButton);
+
+        ttsButton = findViewById(R.id.ttsButton);
+        ttsManager = new TextToSpeechManager(this);
+        musicButton = findViewById(R.id.musicButton);
+        musicStatusTextView = findViewById(R.id.musicStatusTextView);
+
 
         // Get the recipeId from the intent
         Intent intent = getIntent();
@@ -57,7 +64,7 @@ public class RecipeInfo extends AppCompatActivity {
             if (recipe != null) {
                 // Set the recipe details to the UI elements
                 usernameTextView.setText("Username: " + Objects.requireNonNullElse(recipe.getUsername(), "N/A"));
-                ratingTextView.setText("Rating: " + recipe.getRating());
+                ratingTextView.setText("Upvotes: " + recipe.getRating());
                 recipeNameTextView.setText("Recipe Name: " + Objects.requireNonNullElse(recipe.getName(), "N/A"));
                 caloriesTextView.setText("Calories: " + Objects.requireNonNullElse(recipe.getCalories(), "N/A"));
                 typeTextView.setText("Type: " + Objects.requireNonNullElse(recipe.getType(), "N/A"));
@@ -91,11 +98,51 @@ public class RecipeInfo extends AppCompatActivity {
                     startActivity(editIntent);
                 });
 
+                musicButton.setOnClickListener(v -> toggleMusic());
+
                 // Set timer button click listener
                 timerButton.setOnClickListener(v -> {
                      Intent intent2 = new Intent(RecipeInfo.this, CookingTimer.class);
                      startActivity(intent2);
                     Toast.makeText(RecipeInfo.this, "Opening Timer", Toast.LENGTH_SHORT).show();
+                });
+
+                backButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // Call the method to navigate to RecipeList when the back button is clicked
+                        navigateToRecipeList();
+                    }
+                });
+
+                // Set up TTS button click listener
+                ttsButton.setOnClickListener(v -> {
+                    String description = Objects.requireNonNullElse(recipe.getDescription(), "Description not available");
+                    ttsManager.toggleTextToSpeech(description);
+                });
+
+                upvoteButton.setOnClickListener(v -> {
+                    // Check if the recipe is upvoted or downvoted
+                    if (isUpvoted) {
+                        // If upvoted, change the rating by -1 in LocalDBHelper
+                        localDBHelper.updateRecipeRating(recipeId, -1);
+
+                        // Set isUpvoted to false
+                        isUpvoted = false;
+                        // Display a toast or any other visual indication for downvote
+                        Toast.makeText(RecipeInfo.this, "Downvoted", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // If not upvoted, change the rating by +1 in LocalDBHelper
+                        localDBHelper.updateRecipeRating(recipeId, 1);
+
+                        // Set isUpvoted to true
+                        isUpvoted = true;
+                        // Display a toast or any other visual indication for upvote
+                        Toast.makeText(RecipeInfo.this, "Upvoted", Toast.LENGTH_SHORT).show();
+                    }
+
+                    // Update the UI with the new rating
+                    updateRatingUI();
                 });
 
             } else {
@@ -104,5 +151,41 @@ public class RecipeInfo extends AppCompatActivity {
                 finish();
             }
         }
+    }
+    private void toggleMusic() {
+        if (isMusicPlaying) {
+            MusicManager.stopMusic();
+            musicStatusTextView.setText("Music Off");
+        } else {
+            MusicManager.toggleMusic(this);
+            musicStatusTextView.setText("Music On");
+        }
+        isMusicPlaying = !isMusicPlaying;
+    }
+    public void navigateToRecipeList() {
+        // Create an intent to open the RecipeList activity
+        Intent intent = new Intent(RecipeInfo.this, RecipeList.class);
+
+        // Start the RecipeList activity
+        startActivity(intent);
+
+        // Finish the current activity
+        finish();
+    }
+    private void updateRatingUI() {
+        String currentRating = localDBHelper.getRecipeRatingById(recipeId);
+
+        // Update the UI elements with the new rating
+        if (currentRating != null) {
+            ratingTextView.setText("Rating: " + currentRating);
+        }
+    }
+    @Override
+    protected void onDestroy() {
+        // Release TextToSpeech resources
+        if (ttsManager != null) {
+            ttsManager.destroy();
+        }
+        super.onDestroy();
     }
 }

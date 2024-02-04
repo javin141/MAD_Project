@@ -32,6 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/imageInput"
+            android:layout_marginLeft="6dp"
             android:layout_marginTop="8dp"
             android:layout_toEndOf="@id/btnUploadImage"
             android:text="Take Picture" />
@@ -48,7 +49,7 @@
                 android:id="@+id/recipeNameInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Recipe Name" />
+                android:hint="Recipe Name (e.g. Spicy Chicken Noodles)" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Calories Input -->
@@ -63,7 +64,7 @@
                 android:id="@+id/caloriesInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Calories" />
+                android:hint="Calories (e.g. 450 kcal)" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
@@ -86,8 +87,15 @@
             android:layout_below="@+id/typeLabel"
             android:layout_marginTop="0dp"
             android:columnCount="2"
-
             android:columnOrderPreserved="false">
+
+        <RadioGroup
+            android:id="@+id/typeRadioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/typeLabel"
+            android:layout_marginTop="0dp"
+            android:orientation="vertical">
 
             <RadioButton
                 android:id="@+id/radioMain"
@@ -124,6 +132,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Other" />
+            </RadioGroup>
         </GridLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -137,7 +146,7 @@
                 android:id="@+id/prepTimeInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Prep Time" />
+                android:hint="Prep Time (e.g. 20 mins)" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Description Input -->
@@ -152,7 +161,7 @@
                 android:id="@+id/descriptionInput"
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
-                android:hint="Description"
+                android:hint="Description (Ingredients + Instructions)"
                 android:inputType="textMultiLine" />
         </com.google.android.material.textfield.TextInputLayout>
 

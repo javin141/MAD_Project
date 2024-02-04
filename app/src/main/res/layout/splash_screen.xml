@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/splash_bg"
@@ -7,15 +8,16 @@
 
     <TextView
         android:id="@+id/titleTextView"
-        android:layout_width="378dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-        android:layout_marginTop="150dp"
-        android:fontFamily="sans-serif"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="250dp"
+        android:fontFamily="@font/acme"
         android:gravity="center_horizontal"
+        android:letterSpacing="0.05"
         android:text="CookedIn"
         android:textColor="#FFFFFF"
-        android:textSize="40sp"
+        android:textSize="50sp"
         android:textStyle="bold" />
 
     <TextView
@@ -23,10 +25,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/titleTextView"
-        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
         android:gravity="center_horizontal"
         android:text="Explore, Share, and Enjoy Delicious Recipes with the CookedIn Community"
         android:textColor="#FFFFFF"
         android:textSize="18sp" />
 
 </RelativeLayout>
+

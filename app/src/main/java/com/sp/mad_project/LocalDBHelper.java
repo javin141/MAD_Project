@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -149,6 +150,86 @@ public class LocalDBHelper extends SQLiteOpenHelper {
         return recipe;
     }
 
+    @SuppressLint("Range")
+    public String getRecipeRatingById(long recipeId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+        String rating = null;
+
+        try {
+            cursor = db.rawQuery("SELECT " + COLUMN_RATING + " FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + " = ?",
+                    new String[]{String.valueOf(recipeId)});
+
+            if (cursor != null && cursor.moveToFirst()) {
+                rating = cursor.getString(cursor.getColumnIndex(COLUMN_RATING));
+            }
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+
+        return rating;
+    }
+
+    public void updateRecipeRating(long recipeId, int ratingChange) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Fetch the existing rating from the local database
+        String existingRating = getRecipeRatingById(recipeId);
+
+        if (existingRating != null) {
+            // Calculate the new rating
+            int currentRating = Integer.parseInt(existingRating);
+            int newRating = currentRating + ratingChange;
+
+            // Update the local database with the new rating
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_RATING, String.valueOf(newRating));
+
+            db.update(
+                    TABLE_NAME,
+                    values,
+                    COLUMN_ID + " = ?",
+                    new String[]{String.valueOf(recipeId)}
+            );
+
+            Log.d("LocalDBHelper", "Rating updated in the local database. New Rating: " + newRating);
+
+            // Close the database connection
+            db.close();
+
+            // Update the rating in the Astradb
+            AstraHelper astraHelper = new AstraHelper();
+            astraHelper.updateRecipeRating(context, getRecipeNameById(recipeId), newRating);
+            Log.d("AstraHelper", "Rating updated in Astradb. New Rating: " + newRating);
+        } else {
+            Log.e("LocalDBHelper", "Recipe not found in the local database or rating not available.");
+        }
+    }
+
+
+    @SuppressLint("Range")
+    public String getRecipeNameById(long recipeId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+        String recipeName = null;
+
+        try {
+            cursor = db.rawQuery("SELECT " + COLUMN_NAME + " FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + " = ?",
+                    new String[]{String.valueOf(recipeId)});
+
+            if (cursor != null && cursor.moveToFirst()) {
+                recipeName = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
+            }
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+
+        return recipeName;
+    }
     @SuppressLint("Range")
     public List<Recipe> Recipesfilter() {
         List<Recipe> recipes = new ArrayList<>();
