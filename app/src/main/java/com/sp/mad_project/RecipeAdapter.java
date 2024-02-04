@@ -1,6 +1,7 @@
 package com.sp.mad_project;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import java.util.List;
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
 
     private List<Recipe> recipeList;
+    private OnItemClickListener onItemClickListener;
 
     public RecipeAdapter(List<Recipe> recipeList) {
         this.recipeList = recipeList;
@@ -53,8 +55,20 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
             holder.usernameCardView.setVisibility(View.GONE);
         }
 
-        // Set the image resource (change as per your actual image loading mechanism)
-        holder.recipeImageView.setImageResource(R.drawable.sample_food);
+        // Use BitmapUtils to convert byte array to Bitmap and set to ImageView
+        if (recipe.getImage() != null) {
+            Bitmap bitmap = BitmapUtils.getImage(recipe.getImage());
+            holder.recipeImageView.setImageBitmap(bitmap);
+        } else {
+            // Set a default image if the byte array is null
+            holder.recipeImageView.setImageResource(R.drawable.sample_food);
+        }
+
+        holder.itemView.setOnClickListener(view -> {
+            if (onItemClickListener != null) {
+                onItemClickListener.onItemClick(recipe.getId());
+            }
+        });
     }
 
     @Override
@@ -62,7 +76,14 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         return recipeList.size();
     }
 
-    // Provide a direct reference to each of the views within a data item
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(long recipeId);
+    }
+
     public static class RecipeViewHolder extends RecyclerView.ViewHolder {
         public TextView recipeNameTextView;
         public TextView caloriesAndPrepTimeTextView;
@@ -82,4 +103,3 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         }
     }
 }
-

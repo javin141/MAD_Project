@@ -9,6 +9,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 
 public class LocalDBHelper extends SQLiteOpenHelper {
 
@@ -16,6 +18,7 @@ public class LocalDBHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 3;
 
     private Context context;
+    private Set<Long> votedRecipeIds = new HashSet<>();
 
     public static final String TABLE_NAME = "recipes";
     public static final String COLUMN_ID = "_id";
@@ -56,7 +59,7 @@ public class LocalDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Upgrade logic goes here
+
     }
 
     public void insertRecipe(String username, String name, String calories, byte[] image, String type, String prepTime, String description, String rating) {
@@ -110,7 +113,36 @@ public class LocalDBHelper extends SQLiteOpenHelper {
         return recipes;
     }
 
+    @SuppressLint("Range")
+    public Recipe getRecipe(long recipeId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+        Recipe recipe = null;
 
+        try {
+            cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + " = ?", new String[]{String.valueOf(recipeId)});
+
+            if (cursor != null && cursor.moveToFirst()) {
+                recipe = new Recipe();
+
+                recipe.setId(cursor.getLong(cursor.getColumnIndex(COLUMN_ID)));
+                recipe.setName(cursor.getString(cursor.getColumnIndex(COLUMN_NAME)));
+                recipe.setCalories(cursor.getString(cursor.getColumnIndex(COLUMN_CALORIES)));
+                recipe.setPrepTime(cursor.getString(cursor.getColumnIndex(COLUMN_PREP_TIME)));
+                recipe.setType(cursor.getString(cursor.getColumnIndex(COLUMN_TYPE)));
+                recipe.setDescription(cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION)));
+                recipe.setImage(cursor.getBlob(cursor.getColumnIndex(COLUMN_IMAGE)));
+                recipe.setRating(cursor.getString(cursor.getColumnIndex(COLUMN_RATING)));
+                recipe.setUsername(cursor.getString(cursor.getColumnIndex(COLUMN_USERNAME)));
+            }
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+
+        return recipe;
+    }
 
     public List<Recipe> Recipesfilter() {
         List<Recipe> recipes = new ArrayList<>();
@@ -145,6 +177,50 @@ public class LocalDBHelper extends SQLiteOpenHelper {
         }
 
         return recipes;
+    }
+
+    @SuppressLint("Range")
+    public int getRecipeRating(long recipeId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+        int rating = 0;
+
+        try {
+            cursor = db.rawQuery("SELECT " + COLUMN_RATING + " FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + " = ?", new String[]{String.valueOf(recipeId)});
+
+            if (cursor != null && cursor.moveToFirst()) {
+                rating = cursor.getInt(cursor.getColumnIndex(COLUMN_RATING));
+            }
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+
+        return rating;
+    }
+
+    public void updateRating(long recipeId, int newRating) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_RATING, newRating);
+
+        db.update(TABLE_NAME, values, COLUMN_ID + " = ?", new String[]{String.valueOf(recipeId)});
+        db.close();
+    }
+
+    public void voteForRecipe(long recipeId, String username) {
+        if (!hasVoted(recipeId)) {
+            votedRecipeIds.add(recipeId);
+        }
+    }
+
+    public void removeVote(long recipeId) {
+        votedRecipeIds.remove(recipeId);
+    }
+
+    public boolean hasVoted(long recipeId) {
+        return votedRecipeIds.contains(recipeId);
     }
 }
 

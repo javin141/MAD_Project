@@ -1,0 +1,195 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp">
+        <ImageView
+            android:id="@+id/recipeInfoImage"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Username Overlay -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/usernameCardView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:padding="4dp"
+            app:cardBackgroundColor="#D7FFFFFF"
+            app:cardCornerRadius="4dp">
+
+            <TextView
+                android:id="@+id/recipeInfoUsername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:padding="3dp"
+                android:text="Username"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                android:textStyle="bold|italic" />
+        </androidx.cardview.widget.CardView>
+
+        <!-- Rating Overlay -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/ratingCardView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:padding="4dp"
+            app:cardBackgroundColor="#D7FFFFFF"
+            app:cardCornerRadius="4dp">
+
+            <TextView
+                android:id="@+id/recipeInfoRating"
+                android:layout_width="74dp"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:padding="3dp"
+                android:text="Rating"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                android:textStyle="bold|italic" />
+        </androidx.cardview.widget.CardView>
+
+        <!-- Upvote and Downvote Buttons -->
+        <Button
+            android:id="@+id/upvoteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/recipeInfoImage"
+            android:layout_alignParentStart="true"
+            android:text="Upvote"
+            android:textSize="13sp" />
+
+        <Button
+            android:id="@+id/downvoteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/recipeInfoImage"
+            android:layout_marginLeft="4dp"
+            android:layout_toEndOf="@id/upvoteButton"
+            android:text="Downvote"
+            android:textSize="13sp" />
+
+        <!-- Edit Button -->
+        <Button
+            android:id="@+id/editButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/recipeInfoImage"
+            android:layout_alignParentEnd="true"
+            android:text="Edit Recipe"
+            android:textSize="13sp" />
+
+        <!-- Recipe Name Box -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/recipeNameCardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editButton"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="8dp">
+
+            <TextView
+                android:id="@+id/recipeInfoName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="Recipe Name"
+                android:textSize="16sp"/>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Calories Box -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/caloriesCardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/recipeNameCardView"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="8dp">
+
+            <TextView
+                android:id="@+id/recipeInfoCalories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="Calories"
+                android:textSize="16sp"/>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Type Box -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/typeCardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/caloriesCardView"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="8dp">
+
+            <TextView
+                android:id="@+id/recipeInfoType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="Type"
+                android:textSize="16sp"/>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Prep Time Box -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/prepTimeCardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/typeCardView"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="8dp">
+
+            <TextView
+                android:id="@+id/recipeInfoPrepTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="Prep Time"
+                android:textSize="16sp"/>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Description Box -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/descriptionCardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/prepTimeCardView"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="8dp">
+
+            <TextView
+                android:id="@+id/recipeInfoDescription"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="16dp"
+                android:text="Recipe Description"
+                android:textSize="16sp" />
+        </androidx.cardview.widget.CardView>
+
+        <!-- Cooking Timer Button -->
+        <Button
+            android:id="@+id/timerButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/descriptionCardView"
+            android:layout_marginTop="16dp"
+            android:text="Cooking Timer" />
+    </RelativeLayout>
+</ScrollView>

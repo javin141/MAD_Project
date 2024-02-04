@@ -1,6 +1,7 @@
 package com.sp.mad_project;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Base64;
 import android.util.Log;
 
@@ -30,8 +31,8 @@ public class AstraHelper {
     // static String url =  region + "/v2/keyspaces/" + keyspace + "/" + recipeTable + "/{primary_key}";
     // static String url = "https://" + region + "/v2/keyspaces/" + keyspace + "/" + recipeTable + "/{primary_key}";
     // static String url = "https://" + region + ".apps.astra.datastax.com/v2/keyspaces/" + keyspace + "/" + recipeTable + "/{primary_key}";
-    static String url = "https://" + astraid + "-" + region + ".apps.astra.datastax.com/"+ keyspace + "/" + recipeTable + "/";;
-    static String Loginurl =  "https://" + astraid + "-" + region + ".apps.astra.datastax.com/"+ keyspace + "/" + CredentialsTable+ "/";git ;
+    static String url = "https://" + astraid + "-" + region + ".apps.astra.datastax.com/"+ keyspace + "/" + recipeTable + "/";
+    static String Loginurl =  "https://" + astraid + "-" + region + ".apps.astra.datastax.com/"+ keyspace + "/" + CredentialsTable+ "/";
     static String Cassandra_Token = "AstraCS:vPMfhrwCAAwdeoBakkHbfoLM:9fa3eca58b18c041fc936b2444ed41d68215efb342040dabb028eb19cb9cd0f7";
     static int lastID = 0;
     private String username;
@@ -55,7 +56,7 @@ public class AstraHelper {
         params.put("username", usernameStr);
         params.put("foodname", foodnameStr);
         params.put("calories", caloriesStr);
-        params.put("image", Base64.encodeToString(imageBytes, Base64.DEFAULT));
+        params.put("imageresource", Base64.encodeToString(imageBytes, Base64.DEFAULT));
         params.put("type", typeStr);
         params.put("preparationtime", preparationTimeStr);
         params.put("description", descriptionStr);
@@ -98,7 +99,6 @@ public class AstraHelper {
     }
 
     public static void getAllRecipesByVolley(Context context) {
-        // String getUrl = https:// region + "/v2/keyspaces/" + keyspace + "/" + recipeTable;
         RequestQueue queue = Volley.newRequestQueue(context);
 
         String rowsurl = AstraHelper.url + "/rows";
@@ -110,24 +110,26 @@ public class AstraHelper {
                             int count = response.getInt("count");
                             if (count > 0) {
                                 JSONArray data = response.getJSONArray("data");
-                                // Assuming LocalDBHelper is another class with an insertRecipe method
-                                LocalDBHelper localdb = new LocalDBHelper();
-                                for (int i = 0; i < count; i++) {
-                                    try {
-                                        String Sqlusername = data.getJSONObject(i).getString("Username");
+                                LocalDBHelper localdb = new LocalDBHelper(context);
+                                SQLiteDatabase db = localdb.getWritableDatabase();
+                                db.delete(LocalDBHelper.TABLE_NAME, null, null);
+
+                                try {
+                                    for (int i = 0; i < count; i++) {
+                                        String Sqlusername = data.getJSONObject(i).getString("username");
                                         String Sqlfoodname = data.getJSONObject(i).getString("foodname");
                                         String Sqlcalories = data.getJSONObject(i).getString("calories");
-                                        byte[] Sqlimage = Base64.decode(data.getJSONObject(i).getString("imageResource"), Base64.DEFAULT);
+                                        byte[] Sqlimage = Base64.decode(data.getJSONObject(i).getString("imageresource"), Base64.DEFAULT);
                                         String Sqltype = data.getJSONObject(i).getString("type");
                                         String Sqlpreparationtime = data.getJSONObject(i).getString("preparationtime");
                                         String Sqldescription = data.getJSONObject(i).getString("description");
                                         Integer Sqlrating = data.getJSONObject(i).getInt("rating");
 
                                         localdb.insertRecipe(Sqlusername, Sqlfoodname, Sqlcalories, Sqlimage, Sqltype, Sqlpreparationtime, Sqldescription, String.valueOf(Sqlrating));
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                        // Handle JSONException (parsing individual recipe) if needed
                                     }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    // Handle JSONException (parsing individual recipe) if needed
                                 }
                             }
                         } catch (JSONException e) {
@@ -146,7 +148,6 @@ public class AstraHelper {
                         if (error.networkResponse != null) {
                             Log.e("GetAll", "Error Response Code: " + error.networkResponse.statusCode);
                             Log.e("GetAll", "Error Response Data: " + new String(error.networkResponse.data));
-                            // Additional error details from error.networkResponse
                         }
                     }
                 }) {
