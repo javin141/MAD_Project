@@ -30,10 +30,19 @@ public class RecipeList extends AppCompatActivity {
         // Fetch and display recipes
         fetchAndDisplayRecipes();
 
+<<<<<<<
         FloatingActionButton AddRecipe = findViewById(R.id.fabAddRecipe);
         AddRecipe.setOnClickListener(view -> {
+=======
+>>>>>>> 93e2927bc1b2ece2d44af7b1342245133b26b96b
             Intent intent = new Intent(RecipeList.this, AddRecipes.class);
             startActivity(intent);
+        });
+
+        FloatingActionButton filterBtn = findViewById(R.id.filterBtn);
+        filterBtn.setOnClickListener(view -> {
+             Intent intent = new Intent(RecipeList.this, FilterRecipes.class);
+             startActivity(intent);
         });
 
         // Button navigation logic

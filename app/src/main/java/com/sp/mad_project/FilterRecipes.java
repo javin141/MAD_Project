@@ -19,6 +19,14 @@ public class FilterRecipes extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        filterhandler fh = new filterhandler();
+        fh.setRecipetype(getSelectedRecipeType());
+        calories = findViewById(R.id.caloriesEditText);
+        fh.setCalorieamt(String.valueOf(calories));
+        preptime = findViewById(R.id.prepTimeEditText);
+        fh.setPreptime(String.valueOf(preptime));
+        fh.setCaloriemoreorless(getSelectedparametercalories());
+        fh.setPreptimemoreorless(getSelectedparameterpreptime());
         setContentView(R.layout.filter_recipes);
         radioMain = findViewById(R.id.radioMain);
         radioSide = findViewById(R.id.radioSide);
@@ -63,25 +71,25 @@ public class FilterRecipes extends AppCompatActivity {
         } else if (radioOther.isChecked()) {
             return "Other";
         } else {
-            return "";
+            return "*";
         }
     }
 
     private String getSelectedparametercalories() {
         if (Calorie_less.isChecked()){
-            return "less than";
+            return "<";
         } else if (Calorie_more.isChecked()){
-            return "more than";
-        } else { return "unchecked";}
+            return ">";
+        } else { return "*";}
 
     }
 
     private String getSelectedparameterpreptime() {
         if (Prep_less.isChecked()){
-            return "less than";
+            return "<";
         } else if (Prep_more.isChecked()){
-            return "more than";
-        } else { return "unchecked";}
+            return ">";
+        } else { return "*";}
 
     }
 }

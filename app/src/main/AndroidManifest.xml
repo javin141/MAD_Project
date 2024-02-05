@@ -26,6 +26,9 @@
             android:name=".RecipeInfo"
             android:exported="false" />
         <activity
+            android:name=".FilterRecipes"
+            android:exported="false" />
+        <activity
             android:name=".Splash_Screen"
             android:exported="true">
             <intent-filter>

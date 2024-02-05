@@ -22,6 +22,13 @@ public class Homepage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.homepage);
 
+        filterhandler fh = new filterhandler();
+        fh.setRecipetype("type");
+        fh.setCalorieamt("calories");
+        fh.setPreptime("prepTime");
+        fh.setPreptimemoreorless("=");
+        fh.setCaloriemoreorless("=");
+
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
 

@@ -1,13 +1,19 @@
 package com.sp.mad_project;
 
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -52,6 +58,8 @@ public class RecipeInfo extends AppCompatActivity {
         musicButton = findViewById(R.id.musicButton);
         musicStatusTextView = findViewById(R.id.musicStatusTextView);
 
+        FrameLayout instagramShareLayout = findViewById(R.id.instagramShareLayout);
+        FrameLayout twitterShareLayout = findViewById(R.id.twitterShareLayout);
 
         // Get the recipeId from the intent
         Intent intent = getIntent();
@@ -155,6 +163,12 @@ public class RecipeInfo extends AppCompatActivity {
                     updateRatingUI();
                 });
 
+                // Set click listener for Instagram button
+                instagramShareLayout.setOnClickListener(v -> shareToInstagram());
+
+                // Set click listener for Twitter button
+                twitterShareLayout.setOnClickListener(v -> shareToTwitter());
+
             } else {
                 // Log an error and finish the activity if the recipe is null
                 Log.e("RecipeInfo", "Recipe object is null");
@@ -190,6 +204,58 @@ public class RecipeInfo extends AppCompatActivity {
             ratingTextView.setText("Rating: " + currentRating);
         }
     }
+
+    // Method to share to Instagram
+    private void shareToInstagram() {
+        // Get the image URI
+        Uri imageUri = getImageUri(recipeImageView);
+
+        // Create an Intent to open Instagram
+        Intent instagramIntent = new Intent(Intent.ACTION_SEND);
+        instagramIntent.setType("image/*");
+        instagramIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
+        instagramIntent.putExtra(Intent.EXTRA_TEXT, "Check out this \"" + recipeNameTextView.getText() + "\" recipe from the CookedIn app");
+        instagramIntent.setPackage("com.instagram.android"); // Instagram package name
+
+        // Check if Instagram is installed
+        if (instagramIntent.resolveActivity(getPackageManager()) != null) {
+            startActivity(instagramIntent);
+        } else {
+            // Instagram not installed, show a toast or handle accordingly
+            Toast.makeText(this, "Instagram is not installed", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // Method to share to Twitter
+    private void shareToTwitter() {
+        // Get the image URI
+        Uri imageUri = getImageUri(recipeImageView);
+
+        // Create an Intent to open Twitter
+        Intent twitterIntent = new Intent(Intent.ACTION_SEND);
+        twitterIntent.setType("image/*");
+        twitterIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
+        twitterIntent.putExtra(Intent.EXTRA_TEXT, "Check out this \"" + recipeNameTextView.getText() + "\" recipe from the CookedIn app");
+        twitterIntent.setPackage("com.twitter.android"); // Twitter package name
+
+        // Check if Twitter is installed
+        if (twitterIntent.resolveActivity(getPackageManager()) != null) {
+            startActivity(twitterIntent);
+        } else {
+            // Twitter not installed, show a toast or handle accordingly
+            Toast.makeText(this, "Twitter is not installed", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // Method to get image URI from ImageView
+    private Uri getImageUri(ImageView imageView) {
+        Bitmap bitmap = BitmapUtils.getImage(((BitmapDrawable) imageView.getDrawable()).getBitmap());
+
+        // Save the bitmap to a file and get the file's URI
+        String path = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "RecipeImage", null);
+        return Uri.parse(path);
+    }
+
     @Override
     protected void onDestroy() {
         // Release TextToSpeech resources
