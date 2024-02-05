@@ -65,13 +65,13 @@
             android:id="@+id/usernameCardView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/backButton"
+            android:layout_alignParentStart="true"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="20dp"
             android:padding="4dp"
             app:cardBackgroundColor="#D7FFFFFF"
-            app:cardCornerRadius="4dp"
-            android:layout_below="@id/backButton"
-            android:layout_alignParentStart="true">
+            app:cardCornerRadius="4dp">
 
             <TextView
                 android:id="@+id/recipeInfoUsername"
@@ -90,13 +90,13 @@
             android:id="@+id/ratingCardView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/backButton"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginTop="8dp"
             android:padding="4dp"
             app:cardBackgroundColor="#D7FFFFFF"
-            app:cardCornerRadius="4dp"
-            android:layout_below="@id/backButton"
-            android:layout_alignParentEnd="true">
+            app:cardCornerRadius="4dp">
 
             <TextView
                 android:id="@+id/recipeInfoRating"
@@ -116,38 +116,55 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/backButton"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="8dp">
 
             <!-- Image -->
             <ImageView
                 android:id="@+id/recipeInfoImage"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:scaleType="centerCrop"
-                android:layout_marginBottom="16dp"/>
+                android:scaleType="centerCrop" />
 
             <!-- Twitter Share Button -->
-            <ImageView
-                android:id="@+id/twitterShareButton"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+            <FrameLayout
+                android:id="@+id/twitterShareLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignEnd="@id/recipeInfoImage"
-                android:layout_marginEnd="16dp"
-                android:background="?android:attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/twitter" />
+                android:layout_marginEnd="8dp"
+                android:padding="4dp">
+
+                <ImageView
+                    android:id="@+id/twitterShareButton"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="Twitter"
+                    android:src="@drawable/twitter" />
+
+            </FrameLayout>
 
             <!-- Instagram Share Button -->
-            <ImageView
-                android:id="@+id/instagramShareButton"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+            <FrameLayout
+                android:id="@+id/instagramShareLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="8dp"
-                android:layout_toStartOf="@id/twitterShareButton"
-                android:background="?android:attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/instagram" />
+                android:layout_marginEnd="4dp"
+                android:layout_toStartOf="@id/twitterShareLayout"
+                android:padding="4dp">
+
+                <ImageView
+                    android:id="@+id/instagramShareButton"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="Instagram"
+                    android:src="@drawable/instagram" />
+
+            </FrameLayout>
+
         </RelativeLayout>
 
         <!-- Upvote and Downvote Buttons -->
@@ -156,6 +173,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/imageShareContainer"
+            android:layout_marginTop="8dp"
             android:layout_alignParentStart="true"
             android:text="Upvote"
             android:textSize="13sp" />
@@ -166,6 +184,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/imageShareContainer"
+            android:layout_marginTop="8dp"
             android:layout_alignParentEnd="true"
             android:text="Edit Recipe"
             android:textSize="13sp" />

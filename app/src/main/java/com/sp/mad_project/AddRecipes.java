@@ -150,7 +150,14 @@ public class AddRecipes extends AppCompatActivity {
     }
 
     private void saveRecipe() {
-        String username = "No Username";
+        String username;
+        if (AppPreferences.isUserLoggedIn(this)) {
+            // User is logged in, get the username from preferences
+            username = AppPreferences.getUsername(this);
+        } else {
+            // User is not logged in, set default username
+            username = "No Username";
+        }
         String recipeName = Objects.requireNonNull(etRecipeName.getText()).toString().trim();
         String calories = Objects.requireNonNull(etCalories.getText()).toString().trim();
         String prepTime = Objects.requireNonNull(etPrepTime.getText()).toString().trim();

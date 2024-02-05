@@ -79,23 +79,33 @@ public class RecipeInfo extends AppCompatActivity {
 
                 // Set edit button click listener
                 editButton.setOnClickListener(v -> {
-                    // Create an intent to open AddRecipes activity
-                    Intent editIntent = new Intent(RecipeInfo.this, AddRecipes.class);
+                    // Get the current logged-in username
+                    String currentUsername = AppPreferences.getUsername(RecipeInfo.this);
+                    // Check if the current username matches the recipe's username
 
-                    // Pass recipe details to AddRecipes activity
-                    editIntent.putExtra("recipeId", recipeId);
-                    editIntent.putExtra("recipeName", recipe.getName());
-                    editIntent.putExtra("calories", String.valueOf(recipe.getCalories()));
-                    editIntent.putExtra("prepTime", recipe.getPrepTime());
-                    editIntent.putExtra("description", recipe.getDescription());
-                    editIntent.putExtra("type", recipe.getType());
-                    editIntent.putExtra("imageBytes", recipe.getImage());
+                    if (currentUsername.equals(recipe.getUsername())) {
+                        // User is authorized to edit, proceed with opening AddRecipes activity
+                        // Create an intent to open AddRecipes activity
+                        Intent editIntent = new Intent(RecipeInfo.this, AddRecipes.class);
 
-                    // Set the isEditing flag to true
-                    editIntent.putExtra("isEditing", true);
+                        // Pass recipe details to AddRecipes activity
+                        editIntent.putExtra("recipeId", recipeId);
+                        editIntent.putExtra("recipeName", recipe.getName());
+                        editIntent.putExtra("calories", String.valueOf(recipe.getCalories()));
+                        editIntent.putExtra("prepTime", recipe.getPrepTime());
+                        editIntent.putExtra("description", recipe.getDescription());
+                        editIntent.putExtra("type", recipe.getType());
+                        editIntent.putExtra("imageBytes", recipe.getImage());
 
-                    // Start the AddRecipes activity
-                    startActivity(editIntent);
+                        // Set the isEditing flag to true
+                        editIntent.putExtra("isEditing", true);
+
+                        // Start the AddRecipes activity
+                        startActivity(editIntent);
+                    } else {
+                        // User is not authorized to edit
+                        Toast.makeText(RecipeInfo.this, "You are not authorized to edit this recipe", Toast.LENGTH_SHORT).show();
+                    }
                 });
 
                 musicButton.setOnClickListener(v -> toggleMusic());

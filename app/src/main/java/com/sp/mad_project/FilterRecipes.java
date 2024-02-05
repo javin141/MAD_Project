@@ -45,7 +45,7 @@ public class FilterRecipes extends AppCompatActivity {
         fh.setCalorieamt(String.valueOf(calories));
         preptime = findViewById(R.id.prepTimeEditText);
         fh.setPreptime(String.valueOf(preptime));
-        fh.setCaloriemoreorless(getSelectedparametercalories(());
+        fh.setCaloriemoreorless(getSelectedparametercalories());
         fh.setPreptimemoreorless(getSelectedparameterpreptime());
     }
 
