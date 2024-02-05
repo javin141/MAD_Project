@@ -1,9 +1,7 @@
 package com.sp.mad_project;
 
 public class filterhandler {
-<<<<<<< Updated upstream
    //String
-=======
     public String getRecipetype() {
         return Recipetype;
     }
@@ -49,5 +47,4 @@ public class filterhandler {
    String Caloriemoreorless;
    String Preptime;
    String Preptimemoreorless;
->>>>>>> Stashed changes
 }

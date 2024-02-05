@@ -38,9 +38,7 @@ public class FilterRecipes extends AppCompatActivity {
     }
 
     private void savefilters() {
-<<<<<<< Updated upstream
        //setRecipeTypeRadioButton();
-=======
         filterhandler fh = new filterhandler();
         fh.setRecipetype(getSelectedRecipeType());
         calories = findViewById(R.id.caloriesEditText);
@@ -49,7 +47,6 @@ public class FilterRecipes extends AppCompatActivity {
         fh.setPreptime(String.valueOf(preptime));
         fh.setCaloriemoreorless(getSelectedparametercalories(());
         fh.setPreptimemoreorless(getSelectedparameterpreptime());
->>>>>>> Stashed changes
     }
 
     private String getSelectedRecipeType() {
