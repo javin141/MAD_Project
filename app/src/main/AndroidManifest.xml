@@ -45,6 +45,9 @@
             android:exported="true"
             android:label="@string/title_activity_recipe_list"
             android:theme="@style/Theme.MAD_Project" />
+        <activity
+        android:name=".Loginpage"
+        android:exported="false" />
 
         <meta-data
             android:name="preloaded_fonts"

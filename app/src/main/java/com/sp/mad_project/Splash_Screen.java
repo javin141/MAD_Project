@@ -40,7 +40,6 @@ public class Splash_Screen extends AppCompatActivity {
         // Start the combined translation and rotation animation
         animatorSet.start();
 
-        // 3-second delay before navigating to the next page
         new Handler().postDelayed(() -> {
             // Stop the audio when navigating to the next page
             mediaPlayer.stop();
@@ -48,7 +47,7 @@ public class Splash_Screen extends AppCompatActivity {
 
             startActivity(new Intent(Splash_Screen.this, Homepage.class));
             finish(); // Close the splash screen activity
-        }, 4000); // 3 seconds
+        }, 4000);
     }
 
     @Override

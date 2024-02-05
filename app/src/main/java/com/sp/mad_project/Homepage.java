@@ -64,7 +64,8 @@ public class Homepage extends AppCompatActivity {
                 Intent intent = new Intent(Homepage.this, HelpActivity.class);
                 startActivity(intent);
             } else if (id == R.id.sidenav_login) {
-                // Handle login
+                Intent intent = new Intent(Homepage.this, Loginpage.class);
+                startActivity(intent);
             }
             return true;
         }
