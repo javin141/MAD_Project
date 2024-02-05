@@ -36,7 +36,7 @@ public class FilterRecipes extends AppCompatActivity {
 
     }
     private void savefilters() {
-       setRecipeTypeRadioButton();
+       //setRecipeTypeRadioButton();
     }
 
     private void setRecipeTypeRadioButton(String recipeType) {

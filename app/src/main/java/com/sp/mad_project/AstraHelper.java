@@ -20,6 +20,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -258,70 +259,93 @@ public class AstraHelper {
     }
 
    // Login volleys
-    void insertVolleyLogin(Context context,String NameofUser,String email, Integer Password) {
-        Map<String, String> params = new HashMap<>();
-        params.put("NameofUser", NameofUser);
-        params.put("email",email);
-        params.put("Password", String.valueOf(Password));
+   void insertVolleyLogin(Context context, String NameofUser, String email, String password) {
+       Map<String, String> params = new HashMap<>();
+       params.put("nameofuser", NameofUser);
+       params.put("email", email);
+       params.put("password", password);
 
-        // Construct the URL by directly appending the UUID to the base URL
-        String insertUrl = Loginurl;
+       // Construct the URL by directly appending the UUID to the base URL
+       String insertUrl = Loginurl;
 
-        JSONObject postdata = new JSONObject(params);
-        RequestQueue queue = Volley.newRequestQueue(context);
+       JSONObject postdata = new JSONObject(params);
+       RequestQueue queue = Volley.newRequestQueue(context);
 
-        Log.d("AstraHelper", "Constructed URL: " + insertUrl);
+       Log.d("AstraHelper", "Constructed URL: " + insertUrl);
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, insertUrl, postdata,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // Handle response if needed
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("OnErrorResponse", error.toString());
-                    }
-                }) {
-            @Override
-            public Map<String, String> getHeaders() {
-                return AstraHelper.getHeader();
-            }
-        };
-        queue.add(jsonObjectRequest);
-    }
+       JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, insertUrl, postdata,
+               new Response.Listener<JSONObject>() {
+                   @Override
+                   public void onResponse(JSONObject response) {
+                       // Handle response if needed
+                   }
+               },
+               new Response.ErrorListener() {
+                   @Override
+                   public void onErrorResponse(VolleyError error) {
+                       Log.e("volley Insert Login", "Error response: " + error.toString());
 
-    static void getByIDVolleyLogin(Context context, String email) {
+                       if (error.networkResponse != null) {
+                           Log.e("volley Insert Login", "Status Code: " + error.networkResponse.statusCode);
+                           if (error.networkResponse.data != null) {
+                               try {
+                                   String errorResponse = new String(error.networkResponse.data, "UTF-8");
+                                   Log.e("volley Insert Login", "Error Response: " + errorResponse);
+                               } catch (UnsupportedEncodingException e) {
+                                   e.printStackTrace();
+                               }
+                           }
+                       }
+                   }
+               }) {
+           @Override
+           public Map<String, String> getHeaders() {
+               return AstraHelper.getHeader();
+           }
+       };
+       queue.add(jsonObjectRequest);
+   }
+
+
+    public void getByIDVolleyLogin(Context context, String email, OnLoginResultListener listener) {
         String url = AstraHelper.Loginurl + email;
         RequestQueue queue = Volley.newRequestQueue(context);
-        // Use GET REST api call
+
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        if (volleyResponseStatus == 200) { // Read successfully from database
+                        if (volleyResponseStatus == 200) {
                             try {
-                                int count = response.getInt("count"); //Number of records from database
+                                int count = response.getInt("count");
                                 if (count > 0) {
-                                    JSONArray data = response.getJSONArray("data");//Get the record as JSON array
-                                    //parse value somehow lol
-                                    // data.getJSONObject(0).getString("password");
-                                    passwdhandler pwh = new passwdhandler();
-                                    pwh.setpasswd(data.getJSONObject(0).getString("password"));
+                                    JSONArray data = response.getJSONArray("data");
+                                    String username = data.getJSONObject(0).getString("nameofuser");
+                                    String password = data.getJSONObject(0).getString("password");
+
+                                    // Notify listener with the credentials
+                                    listener.onSuccess(new UserCredentials(username, password));
+                                } else {
+                                    // Notify listener that user does not exist
+                                    listener.onUserNotFound();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
+                                // Notify listener of an error
+                                listener.onError();
                             }
+                        } else {
+                            // Notify listener of an error
+                            listener.onError();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // TODO: Handle error
                         Log.e("OnErrorResponse", error.toString());
+                        // Notify listener of an error
+                        listener.onError();
                     }
                 }) {
             @Override
@@ -335,7 +359,34 @@ public class AstraHelper {
                 return super.parseNetworkResponse(response);
             }
         };
-        // add JsonObjectRequest to the RequestQueue
+
+        // Add the request to the RequestQueue
         queue.add(jsonObjectRequest);
+    }
+
+    public class UserCredentials {
+        private String username;
+        private String password;
+
+        public UserCredentials(String username, String password) {
+            this.username = username;
+            this.password = password;
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+    }
+
+    public interface OnLoginResultListener {
+        void onSuccess(UserCredentials credentials);
+
+        void onUserNotFound();
+
+        void onError();
     }
 }

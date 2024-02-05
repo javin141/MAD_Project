@@ -110,43 +110,52 @@
                 android:textStyle="bold|italic" />
         </androidx.cardview.widget.CardView>
 
-        <!-- Twitter Share Button -->
-        <ImageView
-            android:id="@+id/twitterShareButton"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginBottom="16dp"
-            android:layout_marginEnd="16dp"
-            android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/twitter" />
-
-        <!-- Instagram Share Button -->
-        <ImageView
-            android:id="@+id/instagramShareButton"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="16dp"
-            android:layout_toStartOf="@id/twitterShareButton"
-            android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/instagram" />
-
-        <ImageView
-            android:id="@+id/recipeInfoImage"
+        <!-- Image and Share Buttons Container -->
+        <RelativeLayout
+            android:id="@+id/imageShareContainer"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="wrap_content"
             android:layout_below="@id/backButton"
-            android:scaleType="centerCrop"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginTop="16dp">
+
+            <!-- Image -->
+            <ImageView
+                android:id="@+id/recipeInfoImage"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Twitter Share Button -->
+            <ImageView
+                android:id="@+id/twitterShareButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignEnd="@id/recipeInfoImage"
+                android:layout_marginEnd="16dp"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/twitter" />
+
+            <!-- Instagram Share Button -->
+            <ImageView
+                android:id="@+id/instagramShareButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_toStartOf="@id/twitterShareButton"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/instagram" />
+        </RelativeLayout>
 
         <!-- Upvote and Downvote Buttons -->
         <Button
             android:id="@+id/upvoteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/recipeInfoImage"
+            android:layout_below="@id/imageShareContainer"
             android:layout_alignParentStart="true"
             android:text="Upvote"
             android:textSize="13sp" />
@@ -156,7 +165,7 @@
             android:id="@+id/editButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/recipeInfoImage"
+            android:layout_below="@id/imageShareContainer"
             android:layout_alignParentEnd="true"
             android:text="Edit Recipe"
             android:textSize="13sp" />
@@ -166,7 +175,7 @@
             android:id="@+id/recipeNameCardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/editButton"
+            android:layout_below="@id/upvoteButton"
             android:layout_marginTop="16dp"
             app:cardCornerRadius="8dp">
 
