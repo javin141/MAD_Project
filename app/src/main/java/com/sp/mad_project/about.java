@@ -13,6 +13,7 @@ public class about extends AppCompatActivity {
     @Override
     public void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.about);
         name = findViewById(R.id.textView5);
         email = findViewById(R.id.textView4);
         name.setText(AppPreferences.getUsername(this));
