@@ -29,6 +29,9 @@
             android:name=".FilterRecipes"
             android:exported="false" />
         <activity
+            android:name=".about"
+            android:exported="false" />
+        <activity
             android:name=".Splash_Screen"
             android:exported="true">
             <intent-filter>

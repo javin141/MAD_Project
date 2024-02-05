@@ -39,7 +39,6 @@ public class FilterRecipes extends AppCompatActivity {
 
     private void savefilters() {
        //setRecipeTypeRadioButton();
-        RecipeList refresh = new RecipeList();
         LocalDBHelper.fh.setRecipetype(getSelectedRecipeType());
         calories = findViewById(R.id.caloriesEditText);
         LocalDBHelper.fh.setCalorieamt(String.valueOf(calories));
@@ -47,6 +46,7 @@ public class FilterRecipes extends AppCompatActivity {
         LocalDBHelper.fh.setPreptime(String.valueOf(preptime));
         LocalDBHelper.fh.setCaloriemoreorless(getSelectedparametercalories());
         LocalDBHelper.fh.setPreptimemoreorless(getSelectedparameterpreptime());
+        finish();
     }
 
     private String getSelectedRecipeType() {

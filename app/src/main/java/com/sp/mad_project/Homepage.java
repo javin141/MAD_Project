@@ -1,5 +1,7 @@
 package com.sp.mad_project;
 
+import static com.sp.mad_project.LocalDBHelper.fh;
+
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -32,6 +34,11 @@ public class Homepage extends AppCompatActivity {
 
         navigationView.setNavigationItemSelectedListener(navSelected);
 
+        fh.setRecipetype("*");
+        fh.setCalorieamt("");
+        fh.setPreptime("");
+        fh.setPreptimemoreorless("=");
+        fh.setCaloriemoreorless("=");
         // Find Recipes Button
         Button findRecipesButton = findViewById(R.id.findRecipesButton);
         Button cookingTimerButton = findViewById(R.id.cookingTimerButton);
@@ -59,7 +66,8 @@ public class Homepage extends AppCompatActivity {
             if (id == R.id.sidenav_exit) {
                 finish();
             } else if (id == R.id.sidenav_about) {
-
+                Intent intent = new Intent(Homepage.this, about.class);
+                startActivity(intent);
                 // Handle about
             } else if (id == R.id.sidenav_help) {
                 Intent intent = new Intent(Homepage.this, HelpActivity.class);

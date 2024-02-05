@@ -57,11 +57,6 @@ public class LocalDBHelper extends SQLiteOpenHelper {
     public LocalDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
-        fh.setRecipetype("*");
-        fh.setCalorieamt("");
-        fh.setPreptime("");
-        fh.setPreptimemoreorless("=");
-        fh.setCaloriemoreorless("=");
     }
 
     @Override
@@ -99,7 +94,7 @@ public class LocalDBHelper extends SQLiteOpenHelper {
 
         try {
             String params = "";
-            if (params != "" && fh.getRecipetype() != "*"){
+            if (params == "" && fh.getRecipetype() != "*"){
                 params = params + "WHERE" + "COLUMN_TYPE=" + fh.getRecipetype();
             };
             if (params != "" && fh.getCalorieamt() != ""){
