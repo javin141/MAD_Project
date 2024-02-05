@@ -16,6 +16,7 @@ public class FilterRecipes extends AppCompatActivity {
     private RadioButton Prep_less, Prep_more;
     private RadioButton Calorie_less, Calorie_more;
     private EditText preptime, calories;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.filter_recipes);
@@ -35,30 +36,56 @@ public class FilterRecipes extends AppCompatActivity {
         filterbutton.setOnClickListener(view -> savefilters());
 
     }
+
     private void savefilters() {
+<<<<<<< Updated upstream
        //setRecipeTypeRadioButton();
+=======
+        filterhandler fh = new filterhandler();
+        fh.setRecipetype(getSelectedRecipeType());
+        calories = findViewById(R.id.caloriesEditText);
+        fh.setCalorieamt(String.valueOf(calories));
+        preptime = findViewById(R.id.prepTimeEditText);
+        fh.setPreptime(String.valueOf(preptime));
+        fh.setCaloriemoreorless(getSelectedparametercalories(());
+        fh.setPreptimemoreorless(getSelectedparameterpreptime());
+>>>>>>> Stashed changes
     }
 
-    private void setRecipeTypeRadioButton(String recipeType) {
-        switch (recipeType) {
-            case "Main Course":
-                radioMain.setChecked(true);
-                break;
-            case "Side Dish":
-                radioSide.setChecked(true);
-                break;
-            case "Snack":
-                radioSnacks.setChecked(true);
-                break;
-            case "Dessert":
-                radioDesserts.setChecked(true);
-                break;
-            case "Drink":
-                radioDrinks.setChecked(true);
-                break;
-            case "Other":
-                radioOther.setChecked(true);
-                break;
+    private String getSelectedRecipeType() {
+        if (radioMain.isChecked()) {
+            return "Main Course";
+        } else if (radioSide.isChecked()) {
+            return "Side Dish";
+        } else if (radioSnacks.isChecked()) {
+            return "Snack";
+        } else if (radioDesserts.isChecked()) {
+            return "Dessert";
+        } else if (radioDrinks.isChecked()) {
+            return "Drink";
+        } else if (radioOther.isChecked()) {
+            return "Other";
+        } else {
+            return "";
         }
     }
+
+    private String getSelectedparametercalories() {
+        if (Calorie_less.isChecked()){
+            return "less than";
+        } else if (Calorie_more.isChecked()){
+            return "more than";
+        } else { return "unchecked";}
+
+    }
+
+    private String getSelectedparameterpreptime() {
+        if (Prep_less.isChecked()){
+            return "less than";
+        } else if (Prep_more.isChecked()){
+            return "more than";
+        } else { return "unchecked";}
+
+    }
 }
+
