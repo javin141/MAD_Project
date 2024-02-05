@@ -35,6 +35,7 @@ public class LocalDBHelper extends SQLiteOpenHelper {
     public static final String COLUMN_RATING = "rating";
     public static final String COLUMN_USERNAME = "username";
     public static final String COLUMN_UPVOTE = "upVote";
+    static filterhandler fh = new filterhandler();
 
     private static final String CREATE_TABLE =
             "CREATE TABLE " + TABLE_NAME + " (" +
@@ -56,6 +57,11 @@ public class LocalDBHelper extends SQLiteOpenHelper {
     public LocalDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
+        fh.setRecipetype("*");
+        fh.setCalorieamt("*");
+        fh.setPreptime("*");
+        fh.setPreptimemoreorless("=");
+        fh.setCaloriemoreorless("=");
     }
 
     @Override
@@ -94,22 +100,22 @@ public class LocalDBHelper extends SQLiteOpenHelper {
         try {
             filterhandler fh = new filterhandler();
             fh.setRecipetype("*");
-            fh.setCalorieamt("*");
-            fh.setPreptime("*");
+            fh.setCalorieamt("");
+            fh.setPreptime("");
             fh.setPreptimemoreorless("=");
             fh.setCaloriemoreorless("=");
             String params = "";
             if (params != "" && fh.getRecipetype() != "*"){
                 params = params + "WHERE" + "COLUMN_TYPE=" + fh.getRecipetype();
             };
-            if (params != "" && fh.getCalorieamt() != "*"){
+            if (params != "" && fh.getCalorieamt() != ""){
                 params = params + "AND" + "COLUMN_CALORIES" + fh.getCaloriemoreorless() + fh.getCalorieamt();
-            } else if (fh.getCalorieamt() != "*") {
+            } else if (fh.getCalorieamt() != "") {
                 params = params + "WHERE" + "COLUMN_CALORIES" + fh.getCaloriemoreorless()  + fh.getCalorieamt();
             };
-            if (params != "" && fh.getCalorieamt() != "*"){
+            if (params != "" && fh.getPreptime() != ""){
                 params = params + "AND" + "COLUMN_PREP_TIME" + fh.getPreptimemoreorless() + fh.getPreptime();
-            } else if (fh.getCalorieamt() != "*") {
+            } else if (fh.getPreptime() != "") {
                 params = params + "WHERE" + "COLUMN_PREP_TIME" + fh.getPreptimemoreorless()  + fh.getPreptime();
             };
             cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + params  , null);

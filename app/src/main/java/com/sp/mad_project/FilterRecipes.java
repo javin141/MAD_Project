@@ -19,14 +19,6 @@ public class FilterRecipes extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        filterhandler fh = new filterhandler();
-        fh.setRecipetype(getSelectedRecipeType());
-        calories = findViewById(R.id.caloriesEditText);
-        fh.setCalorieamt(String.valueOf(calories));
-        preptime = findViewById(R.id.prepTimeEditText);
-        fh.setPreptime(String.valueOf(preptime));
-        fh.setCaloriemoreorless(getSelectedparametercalories());
-        fh.setPreptimemoreorless(getSelectedparameterpreptime());
         setContentView(R.layout.filter_recipes);
         radioMain = findViewById(R.id.radioMain);
         radioSide = findViewById(R.id.radioSide);
@@ -47,14 +39,16 @@ public class FilterRecipes extends AppCompatActivity {
 
     private void savefilters() {
        //setRecipeTypeRadioButton();
-        filterhandler fh = new filterhandler();
-        fh.setRecipetype(getSelectedRecipeType());
+        LocalDBHelper.fh.setRecipetype(getSelectedRecipeType());
         calories = findViewById(R.id.caloriesEditText);
-        fh.setCalorieamt(String.valueOf(calories));
+        LocalDBHelper.fh.setCalorieamt(String.valueOf(calories));
         preptime = findViewById(R.id.prepTimeEditText);
-        fh.setPreptime(String.valueOf(preptime));
-        fh.setCaloriemoreorless(getSelectedparametercalories());
-        fh.setPreptimemoreorless(getSelectedparameterpreptime());
+        LocalDBHelper.fh.setPreptime(String.valueOf(preptime));
+        LocalDBHelper.fh.setCaloriemoreorless(getSelectedparametercalories());
+        LocalDBHelper.fh.setPreptimemoreorless(getSelectedparameterpreptime());
+        finish();
+        RecipeList refresh = new RecipeList();
+        refresh.fetchAndDisplayRecipes();
     }
 
     private String getSelectedRecipeType() {
