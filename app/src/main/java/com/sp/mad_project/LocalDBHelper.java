@@ -61,6 +61,7 @@ public class LocalDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE);
+
     }
 
     @Override
@@ -91,7 +92,27 @@ public class LocalDBHelper extends SQLiteOpenHelper {
         Cursor cursor = null;
 
         try {
-            cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+            filterhandler fh = new filterhandler();
+            fh.setRecipetype("*");
+            fh.setCalorieamt("*");
+            fh.setPreptime("*");
+            fh.setPreptimemoreorless("=");
+            fh.setCaloriemoreorless("=");
+            String params = "";
+            if (params != "" && fh.getRecipetype() != "*"){
+                params = params + "WHERE" + "COLUMN_TYPE=" + fh.getRecipetype();
+            };
+            if (params != "" && fh.getCalorieamt() != "*"){
+                params = params + "AND" + "COLUMN_CALORIES" + fh.getCaloriemoreorless() + fh.getCalorieamt();
+            } else if (fh.getCalorieamt() != "*") {
+                params = params + "WHERE" + "COLUMN_CALORIES" + fh.getCaloriemoreorless()  + fh.getCalorieamt();
+            };
+            if (params != "" && fh.getCalorieamt() != "*"){
+                params = params + "AND" + "COLUMN_PREP_TIME" + fh.getPreptimemoreorless() + fh.getPreptime();
+            } else if (fh.getCalorieamt() != "*") {
+                params = params + "WHERE" + "COLUMN_PREP_TIME" + fh.getPreptimemoreorless()  + fh.getPreptime();
+            };
+            cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + params  , null);
 
             if (cursor.moveToFirst()) {
                 do {
