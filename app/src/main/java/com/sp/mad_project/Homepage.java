@@ -58,6 +58,7 @@ public class Homepage extends AppCompatActivity {
             if (id == R.id.sidenav_exit) {
                 finish();
             } else if (id == R.id.sidenav_about) {
+
                 // Handle about
             } else if (id == R.id.sidenav_help) {
                 Intent intent = new Intent(Homepage.this, HelpActivity.class);

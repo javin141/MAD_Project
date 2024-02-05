@@ -292,8 +292,8 @@ public class AstraHelper {
         queue.add(jsonObjectRequest);
     }
 
-    private void getByIDVolleyLogin(Context context, String name) {
-        String url = AstraHelper.Loginurl + name;
+    static void getByIDVolleyLogin(Context context, String email) {
+        String url = AstraHelper.Loginurl + email;
         RequestQueue queue = Volley.newRequestQueue(context);
         // Use GET REST api call
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -307,7 +307,8 @@ public class AstraHelper {
                                     JSONArray data = response.getJSONArray("data");//Get the record as JSON array
                                     //parse value somehow lol
                                     // data.getJSONObject(0).getString("password");
-
+                                    passwdhandler pwh = new passwdhandler();
+                                    pwh.setpasswd(data.getJSONObject(0).getString("password"));
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
