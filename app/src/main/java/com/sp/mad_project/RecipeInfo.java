@@ -249,11 +249,21 @@ public class RecipeInfo extends AppCompatActivity {
 
     // Method to get image URI from ImageView
     private Uri getImageUri(ImageView imageView) {
-        Bitmap bitmap = BitmapUtils.getImage(((BitmapDrawable) imageView.getDrawable()).getBitmap());
+        if (imageView.getDrawable() != null) {
+            Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
 
-        // Save the bitmap to a file and get the file's URI
-        String path = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "RecipeImage", null);
-        return Uri.parse(path);
+            if (bitmap != null) {
+                // Save the bitmap to a file and get the file's URI
+                String path = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "RecipeImage", null);
+                if (path != null) {
+                    return Uri.parse(path);
+                }
+            }
+        }
+
+        // If something goes wrong or the URI is null, handle it gracefully
+        Toast.makeText(this, "Error preparing image for sharing", Toast.LENGTH_SHORT).show();
+        return null;
     }
 
     @Override
