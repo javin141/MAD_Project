@@ -258,13 +258,14 @@ public class AstraHelper {
     }
 
    // Login volleys
-    void insertVolleyLogin(Context context,String NameofUser, Integer Password) {
+    void insertVolleyLogin(Context context,String NameofUser,String email, Integer Password) {
         Map<String, String> params = new HashMap<>();
         params.put("NameofUser", NameofUser);
+        params.put("email",email);
         params.put("Password", String.valueOf(Password));
 
         // Construct the URL by directly appending the UUID to the base URL
-        String insertUrl = Loginurl + "/" + NameofUser;
+        String insertUrl = Loginurl;
 
         JSONObject postdata = new JSONObject(params);
         RequestQueue queue = Volley.newRequestQueue(context);
